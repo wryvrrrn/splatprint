@@ -3,7 +3,7 @@ import numpy as np
 
 
 #set up vars
-def preview(macroname, output, inverse, repair):
+def preview(macroname, output, inverse, repair, repairimg):
     macro = open(macroname, 'r')
     curx = 0 #cursor x value
     cury = 0 #cursor y value
@@ -11,25 +11,32 @@ def preview(macroname, output, inverse, repair):
     #color options
     BG_clr_nrm = (255,255,255)
     BG_clr_inv = (0,0,0)
-    BG_clr_rpr = (123,123,123)
-    A_clr = (0,0,0)
-    B_clr = (255,255,255)
+    A_clr_nrm = (0,0,0)
+    B_clr_inv = (255,255,255)
+    A_clr_rpr = (123,0,0)
+    B_clr_rpr = (255,200,200)
     skip_clr_nrm = (200,200,255)
     skip_clr_inv = (0,85,215)
     skip_clr_rpr = (123,123,255)
     #set colors based on mode
     if repair:
-        BG_clr = BG_clr_rpr
         skip_clr = skip_clr_rpr
+        A_clr = A_clr_rpr
+        B_clr = B_clr_rpr
     elif inverse:
         BG_clr = BG_clr_inv
         skip_clr = skip_clr_inv
+        B_clr = B_clr_inv
     else:
         BG_clr = BG_clr_nrm
         skip_clr = skip_clr_nrm
+        A_clr = A_clr_nrm
 
-    #set up blank canvas
-    img = Image.new(mode="RGB", size=(320, 120), color=BG_clr)
+    #set up canvas
+    if repair:
+        img = repairimg.convert('RGB')
+    else:
+        img = Image.new(mode="RGB", size=(320, 120), color=BG_clr)
     img_array = np.array(img)
 
     #iterate across image

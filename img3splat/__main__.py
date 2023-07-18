@@ -1,4 +1,5 @@
 #import libraries
+from cmath import nan
 import sys    #for quitting the program
 from PIL import Image
 import numpy as np
@@ -93,7 +94,9 @@ if repair:
 
 # generate 320x120 rotated image from repair image
 if repair:
-    rprimg_ar = repairpost.procrepair(rprimg) #this returns a rotated array
+    rpr_out = repairpost.procrepair(rprimg)    #returns (rotated array, processed screenshot image)
+    rprimg_ar = rpr_out[0]
+    scrimg = rpr_out[1]
 
 #-----------------------------
 
@@ -130,14 +133,14 @@ else:
 
 #run preview script
 if repair:
-    macropreview.preview(rpr_macro_name, rpr_preview_name, False, True)
+    macropreview.preview(rpr_macro_name, rpr_preview_name, False, True, scrimg)
     if verbose_en:
         print('Generated repair macro preview!')
 else:
-    macropreview.preview(nrm_macro_name, nrm_preview_name, False, False)
+    macropreview.preview(nrm_macro_name, nrm_preview_name, False, False, None)
     if verbose_en:
         print('Generated macro preview!')
-    macropreview.preview(inv_macro_name, nrm_preview_name, False, False)
+    macropreview.preview(inv_macro_name, nrm_preview_name, False, False, None)
     if verbose_en:
         print('Generated inverse macro preview!')
 

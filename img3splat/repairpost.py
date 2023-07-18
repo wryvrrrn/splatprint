@@ -23,11 +23,13 @@ def procrepair(image):    #takes in 320x120 or screenshot, outputs 320x120 rotat
         img119 = img119.resize((320,119))    #scale down 3x
         img1 = img1.resize((320,1))    #scale down 3x horizontally only
         imgar = np.concatenate((np.array(img119), np.array(img1)), axis=0)    #concat 119+1 to get 320x120
+        scrimg = Image.fromarray(imgar)    #save screenshot image for macro preview
     else:    #for non-screenshot
         image = image.convert('1')
+        scrimg = image    #save for macro preview
         imgar = np.array(image)
     imgar = np.rot90(imgar, 3)    #rotate 90 degrees
-    return imgar
+    return imgar, scrimg
 
 
 def genrepairarray(main_ar, rpr_ar):    #generates repair array (proc_ar)

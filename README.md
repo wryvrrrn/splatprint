@@ -10,7 +10,7 @@ img3splat is a post printer for Splatoon 3 that generates macros for [NXBT](http
 - canvas horizontal on empty canvas (unless using "inverse", then all black), minimum brush size on top left, press sync button on controllers
 - run NXBT macro (command); will automatically press minus to save on completion
 - once finished, if there's any printing errors, take a screenshot of the post editor with the cursor minimum size top left
-- run img3splat in repair mode (command)
+- run img3splat in repair mode (command) **make sure you save the screenshot to the camera roll, don't save to clipboard!!! will jpg compress it to shit!!!!!!!!**
 - run NXBT with repair macro (command)
 - repeat if needed
 

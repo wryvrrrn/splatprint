@@ -12,3 +12,6 @@ __main__.py:
 
 printpost.py:
 - option to only print bottom pixels if they're in a column you're repairing? (maybe not necessary)
+
+macropreview.py:
+- have skip color adapt to bg color on repair
