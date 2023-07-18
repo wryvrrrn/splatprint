@@ -1,13 +1,5 @@
-#TODO:
-# -set up command line switches
-# -set up paths properly
-# -path/git/pip integration
-# -separate script for comparing screenshot to file (get 320x120 image from screenshot, then numpy mask?)
-# -row mode? it's just changing some values but
-#-----------------------------
-
 #import libraries
-import sys #this is for quitting the program
+import sys    #for quitting the program
 from PIL import Image
 import numpy as np
 
@@ -16,27 +8,36 @@ import macropreview
 
 #future CLI argument stuff
 img_input = 'nkos.png'
+rpr_input = 'screenshot.jpg'
 clm_input = ''
 clm_min = 0
 clm_max = 319
 delay_input = ''
 delay = 0.1
-startinplace = False #this is to put the cursor in place at (an) empty column(s)and it'll just print the column(s)
+startinplace = False    #this is to put the cursor in place at (an) empty column(s)and it'll just print the column(s)
 skipemptylines = True
-show_instructions = True #verbose flag
-repair = False #repair mode for eventual screenshot to file comparison
+verbose_en = True         #print lines after macro generation/preview generation (doesn't affect error output)
+show_instructions = False    #show print instructions on completion (maybe via very verbose flag?)
+repair = False    #repair mode for screenshot to file comparison
+
+#output vars
+nrm_macro_name = 'nrm_macro.txt'
+inv_macro_name = 'inv_macro.txt'
+rpr_macro_name = 'rpr_macro.txt'
+nrm_preview_name = 'nrm_preview.png'
+inv_preview_name = 'inv_preview.png'
+rpr_preview_name = 'rpr_preview.png'
 
 #-----------------------------
-
 #validate inputs
 
 #parse column input
 try:
     if clm_input != '':
-        try: #if column input is one value
+        try:    #if column input is one value
             clm_min = int(clm_input)
             clm_max = clm_min
-        except: #if column input is two values
+        except:     #if column input is two values
             clm_list = clm_input.split("-", 1)
             print(clm_list[0], clm_list[1])
             clm_min = int(clm_list[0])
@@ -45,7 +46,7 @@ except:
     print('Error: Invalid column input!')
     print('Make sure values are 0-319, either [single column] or [starting column]-[ending column].') 
     sys.exit()
-if clm_min > clm_max or clm_min < 0 or clm_max > 319: #make sure values are in bounds
+if clm_min > clm_max or clm_min < 0 or clm_max > 319:    #make sure values are in bounds
     print('Error: Invalid column input!')
     print('Make sure values are 0-319, either "[single column]" or "[starting column]-[ending column]".') 
     sys.exit()
@@ -66,50 +67,75 @@ if delay <= 0:
 elif delay >= 0.5:
     print('Delay value is large, print might take a while.')
 
-#open image, convert to bilevel, test integrity (exit if invalid)
+#open main image, convert to bilevel, test integrity (exit if invalid)
 try:
-    spimg = Image.open(img_input).convert('1')
+    mainimg = Image.open(img_input).convert('1')
 except:
     print("Error: Invalid file! Image isn't recognized or doesn't exist.")
     sys.exit()
-
-#check image size (exit if wrong size)
-if spimg.size != (320,120):
+if mainimg.size != (320,120):    #check image size (exit if wrong size)
     print('Error: Image is not 320x120!')
     sys.exit()
 
+#open repair image, check size
+if repair:
+    try:
+        rprimg = Image.open(rpr_input)
+    except:
+        print("Error: Invalid repair file! Image isn't recognized or doesn't exist.")
+        sys.exit()
+    if ( (rprimg.size == (1280,720)) or (rprimg.size == (320,120)) ) == False:
+        print('Error: Repair image is not 1280x720 or 320x120!')
+        sys.exit()
 
 #-----------------------------
 
-#convert image to np array
-spimg_np = np.array(spimg)
-#rotate img 90 deg to process rows as columns
-spimg_np = np.rot90(spimg_np, 3)
+#generate 320x120 rotated image from repair image #(WIP, commented out for now)
+# if repair:
+#     rprimg_ar = repairpost.procrepair(rprimg) #this returns a rotated array
 
-#call the print function somewhere around here i think, both normal and inverse
-nrm_macro_name = 'splat_macro.txt'
-inv_macro_name = 'inv_macro.txt'
+#-----------------------------
 
-nrm_macro = open(nrm_macro_name, 'w')
-printpost.printpost(spimg_np, nrm_macro, False, clm_min, clm_max, delay, startinplace, skipemptylines, repair)
-if show_instructions:
-    print('Generated macro!')
+#convert main image to np array, rotate 90 deg to process as columns
+mainimg_ar = np.array(mainimg)
+mainimg_ar = np.rot90(mainimg_ar, 3)
 
-inv_macro = open(inv_macro_name, 'w')
-printpost.printpost(spimg_np, inv_macro, True, clm_min, clm_max, delay, startinplace, skipemptylines, repair)
-if show_instructions:
-    print('Generated inverse macro!')
+#generate repair array, generate macro 
+if repair:
+    print("sorry this isn't finished yet") #(WIP)
+    # proc_ar = repairpost.genrepairarray(mainimg_ar, rprimg_ar)    #creates printable array with repair instructions
+    # check if proc_ar is all skip, if so, terminate program
+
+#-----------------------------
+
+#generate repair macro
+if repair:
+    print("sorry this isn't finished yet") #(WIP)
+#     printpost.printpost(proc_ar, rpr_macro_name, False, clm_min, clm_max, delay, startinplace, skipemptylines, True)
+
+#generate normal/inverse macros
+else:
+    printpost.printpost(mainimg_ar, nrm_macro_name, False, clm_min, clm_max, delay, startinplace, skipemptylines, False)
+    if verbose_en:
+        print('Generated macro!')
+    printpost.printpost(mainimg_ar, inv_macro_name, True, clm_min, clm_max, delay, startinplace, skipemptylines, False)
+    if verbose_en:
+        print('Generated inverse macro!')
 
 #------------------------------
 
 #run preview script
-macropreview.preview(nrm_macro_name, 'macro_preview.png')
-if show_instructions:
-    print('Generated macro preview!')
-
-macropreview.preview(inv_macro_name, 'inv_preview.png')
-if show_instructions:
-    print('Generated inverse macro preview!')
+if repair:
+    macropreview.preview(rpr_macro_name, rpr_preview_name, False, True)
+    if verbose_en:
+        print('Generated repair macro preview!')
+else:
+    macropreview.preview(nrm_macro_name, nrm_preview_name, False, False)
+    if verbose_en:
+        print('Generated macro preview!')
+    macropreview.preview(inv_macro_name, nrm_preview_name, False, False)
+    if verbose_en:
+        print('Generated inverse macro preview!')
 
 #closing message
 if show_instructions:

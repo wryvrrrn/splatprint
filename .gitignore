@@ -9,11 +9,24 @@ bmcm.png
 bmcm_clip.png
 nkos.png
 inv_macro.txt
-splat_macro.txt
+nrm_macro.txt
+rpr_macro.txt
 inv_preview.png
-macro_preview.png
+nrm_preview.png
+rpr_preview.png
 screenshot.jpg
 screenshot_ruler.png
+test_preview.png
+wrongsize_test.jpg
 
-# __pycache__
+# changelog (stores what goes in git commits anyways)
+changelog.txt
+
+# needed because I'm not very smart
+git_instructions.txt
+
+# test.py (for testing purposes only)
+test.py
+
+# pycache
 __pycache__

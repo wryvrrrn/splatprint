@@ -1,0 +1,29 @@
+placeholder lines/lines that need work are generally commented with #(WIP)
+
+general:
+- set up command line switches
+- clean up junk files in project folder
+- set up demo folder (normal and inverse test images, macro preview, in-game screenshot (first pass), repair macro preview, in-game screenshot (second pass))
+
+__main__.py:
+- uncomment repair functions once they're done
+- check if processed repair array is empty (all skip); if so, terminate program as macro isn't needed
+- proper CLI argument setup
+- make show_instructions only show instructions, set up a verbose flag
+
+printpost.py:
+- set up repair print (lines tagged with WIP)
+	option to only print bottom pixels if they're in a column you're repairing
+
+repairpost.py
+- actually make it
+- detect image size; if 320x120, convert to threshold, convert to np array, rotate 90 degrees
+- screenshot to img: get top 319x120 from image, scale down to 319x120, threshold (maybe threshold before? idk)
+	for bottom row, threshold then squish to 1x120? need different settings though
+	then, append to bottom of 319x120 np array, and rotate
+	if that doesn't work gotta go with more complex options
+- generate repair array: use numpy masks? int array from 0-2, 0 is black (would be False), 1 is white (would be True), 2 is skip
+	then make top left 2x2 (or top right once rotated i guess) pixels Skip (cursor blocks it)
+- function names:
+	procrepair(rprimg) - screenshot to image
+	genrepairarray(mainimg_air, rprimg_ar) - generates repair array (proc_ar)
