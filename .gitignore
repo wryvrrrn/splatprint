@@ -5,6 +5,9 @@
 *.bak
 
 # output and test images
+120.png
+rotimg.png
+proc_img.png
 bmcm.png
 bmcm_clip.png
 nkos.png

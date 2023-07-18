@@ -36,7 +36,7 @@ second pass result
 ## Arguments/outputs
 ### Arguments
 - image: required, the post you want to print; 320x120 horizontal image (doesn't need to be black and white (auto-converted based on luminance), supports any format supported by `Pillow`)
-- repair image: optional, 1280x720 screenshot of the post interface (make sure cursor is smallest and set to top left (or maybe you don't get the cursor if you don't use the dpad? idk)); also accepts a 320x120 image if you already processed it for some reason
+- repair image: optional, 1280x720 screenshot of the post interface (make sure cursor is smallest and set to top left, ignores top left 2x2 pixels); also accepts a 320x120 image if you already processed it for some reason
 - override last row detection (repair): useful if the program isn't detecting the last row of the screenshot image properly (as it's one line of pixels with color bleed due to jpg compression); reprints the bottom pixel of any column that otherwise requires repair, ignores them otherwise regardless of what color they're detected as 
 - delay: amount of time between inputs in seconds (0.1 by default), can decrease to increase speed at the risk of higher dropped inputs
 - columns: single column or min-max, will only print those columns (assumes columns are empty); likely unneeded with repair function
