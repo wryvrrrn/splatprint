@@ -5,6 +5,7 @@ import numpy as np
 
 import printpost
 import macropreview
+import repairpost
 
 #future CLI argument stuff
 img_input = 'nkos.png'
@@ -90,9 +91,9 @@ if repair:
 
 #-----------------------------
 
-#generate 320x120 rotated image from repair image #(WIP, commented out for now)
-# if repair:
-#     rprimg_ar = repairpost.procrepair(rprimg) #this returns a rotated array
+# generate 320x120 rotated image from repair image
+if repair:
+    rprimg_ar = repairpost.procrepair(rprimg) #this returns a rotated array
 
 #-----------------------------
 
@@ -102,8 +103,7 @@ mainimg_ar = np.rot90(mainimg_ar, 3)
 
 #generate repair array, generate macro 
 if repair:
-    print("sorry this isn't finished yet") #(WIP)
-    # proc_ar = repairpost.genrepairarray(mainimg_ar, rprimg_ar)    #creates printable array with repair instructions
+    proc_ar = repairpost.genrepairarray(mainimg_ar, rprimg_ar)    #creates printable array with repair instructions
     # check if proc_ar is all skip, if so, terminate program
 
 #-----------------------------
