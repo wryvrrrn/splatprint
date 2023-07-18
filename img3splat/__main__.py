@@ -20,7 +20,7 @@ startinplace = False    #this is to put the cursor in place at (an) empty column
 skipemptylines = True
 verbose_en = True         #print lines after macro generation/preview generation (doesn't affect error output)
 show_instructions = False    #show print instructions on completion (maybe via very verbose flag?)
-repair = True    #repair mode for screenshot to file comparison
+repair = False    #repair mode for screenshot to file comparison
 
 #output vars
 nrm_macro_name = 'nrm_macro.txt'
@@ -140,7 +140,7 @@ else:
     macropreview.preview(nrm_macro_name, nrm_preview_name, False, False, None)
     if verbose_en:
         print('Generated macro preview!')
-    macropreview.preview(inv_macro_name, nrm_preview_name, False, False, None)
+    macropreview.preview(inv_macro_name, inv_preview_name, True, False, None)
     if verbose_en:
         print('Generated inverse macro preview!')
 

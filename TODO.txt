@@ -5,6 +5,7 @@ general:
 - clean up junk files in project folder
 - set up demo folder (normal and inverse test images, macro preview, in-game screenshot (first pass), repair macro preview, in-game screenshot (second pass))
 - save flag? only takes screenshot image, outputs to a png (for editing a post that you've drawn in-game)
+- try nxbt with different bluetooth adapter (figure out how to disable the current one maybe?)
 
 __main__.py:
 - proper CLI argument setup
