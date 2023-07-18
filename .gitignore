@@ -1,0 +1,19 @@
+# vscode workspace
+*.code-workspace
+
+# Notepad++ .bak
+*.bak
+
+# output and test images
+bmcm.png
+bmcm_clip.png
+nkos.png
+inv_macro.txt
+splat_macro.txt
+inv_preview.png
+macro_preview.png
+screenshot.jpg
+screenshot_ruler.png
+
+# __pycache__
+__pycache__
