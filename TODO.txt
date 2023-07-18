@@ -8,8 +8,7 @@ general:
 
 __main__.py:
 - proper CLI argument setup
-- make show_instructions only show instructions, set up a verbose flag
+- change default delay for repair print (slow it down maybe)?
 
 printpost.py:
-- set up repair print (lines tagged with WIP)
-	option to only print bottom pixels if they're in a column you're repairing
+- option to only print bottom pixels if they're in a column you're repairing? (maybe not necessary)

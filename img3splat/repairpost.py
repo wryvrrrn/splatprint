@@ -31,9 +31,6 @@ def procrepair(image):    #takes in 320x120 or screenshot, outputs 320x120 rotat
 
 
 def genrepairarray(main_ar, rpr_ar):    #generates repair array (proc_ar)
-    # use numpy masks? int array from 0-2, 0 is black (would be False), 1 is white (would be True), 2 is skip
-	# then make top left 2x2 (or top right once rotated i guess) pixels Skip (cursor blocks it)
-
     #create empty processed array (full of skip (2))
     proc_ar = np.full((320, 120), 2, dtype=int)
 
@@ -50,9 +47,9 @@ def genrepairarray(main_ar, rpr_ar):    #generates repair array (proc_ar)
     for index, x in np.ndenumerate(mask_ar):
         if x:
             if main_ar[index]:
-                proc_ar[index] = 1
-            else:
                 proc_ar[index] = 0
+            else:
+                proc_ar[index] = 1
 
     return proc_ar
 
