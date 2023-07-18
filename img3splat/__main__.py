@@ -9,7 +9,7 @@ import repairpost
 
 #future CLI argument stuff
 img_input = 'nkos.png'
-rpr_input = 'nkos.png'
+rpr_input = 'screenshot.jpg'
 clm_input = ''
 clm_min = 0
 clm_max = 319
@@ -113,8 +113,9 @@ if repair:
 
 #generate repair macro
 if repair:
-    print("sorry this isn't finished yet") #(WIP)
-#     printpost.printpost(proc_ar, rpr_macro_name, False, clm_min, clm_max, delay, startinplace, skipemptylines, True)
+    printpost.printpost(proc_ar, rpr_macro_name, False, clm_min, clm_max, delay, startinplace, skipemptylines, True)
+    if verbose_en:
+        print('Generated repair macro!')
 
 #generate normal/inverse macros
 else:

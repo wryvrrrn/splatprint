@@ -29,7 +29,8 @@ def printpost(array, inputfname, inverse, prtmin, prtmax, delay, inplace, skipli
         if skiplines: 
             lineskip = False    #reset on new line
             if repair:
-                print('repair not implemented sorry')    #placeholder for now (WIP)
+                if np.all(crtrow == 2):    #check if 2 (skip)
+                    lineskip = True
             elif inverse:
                 if np.any(crtrow) == False:    #check if any white pixels exist
                     lineskip = True
@@ -46,7 +47,10 @@ def printpost(array, inputfname, inverse, prtmin, prtmax, delay, inplace, skipli
                 procrow = crtrow    #if flipping isn't needed, make intact row the processed row
             for x in procrow:    #iterate over the row
                 if repair:
-                    print('repair not implemented sorry')    #placeholder for now (WIP)
+                    if x == 0:
+                        inputfile.write('\nB ' + delaystr + '\n' + delaystr)
+                    elif x == 1:
+                        inputfile.write('\nA ' + delaystr + '\n' + delaystr)
                 elif inverse:    #if inverse, erase when True (white)
                     if x:
                         inputfile.write('\nB ' + delaystr + '\n' + delaystr)
