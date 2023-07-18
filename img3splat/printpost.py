@@ -17,6 +17,15 @@ def printpost(array, inputfname, inverse, prtmin, prtmax, delay, inplace, skipli
     inputfile.write('\nA ' + delaystr)
     inputfile.write('\n5.0s')
 
+    #move to top left, switch to smallest brush
+    inputfile.write('\nL ' + delaystr + '\n' + delaystr)
+    inputfile.write('\nL ' + delaystr + '\n' + delaystr)
+    inputfile.write('\nL ' + delaystr + '\n' + delaystr)
+    inputfile.write('\nL ' + delaystr + '\n' + delaystr)
+    inputfile.write('\nL ' + delaystr + '\n' + delaystr)
+    inputfile.write('\nL_STICK@-100+100 5s' + '\n' + delaystr)
+
+
     #remove skipped columns, go to min column (if print in place is disabled)
     for i in range(prtmin):
         if inplace == False:
@@ -73,6 +82,9 @@ def printpost(array, inputfname, inverse, prtmin, prtmax, delay, inplace, skipli
                 crsr_is_top = True
                 dirstr = '\nDPAD_DOWN ' + delaystr + '\n' + delaystr
 
+    #move cursor to top, capture
+    inputfile.write('\nL_STICK@-100+100 5s' + '\n' + delaystr)
+    inputfile.write('\nCAPTURE' + delaystr + '\n' + delaystr)
 
     #save image and close file
     inputfile.write('\nMINUS ' + delaystr + '\n' + delaystr + '\n5.0s')

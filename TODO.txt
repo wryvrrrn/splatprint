@@ -8,7 +8,7 @@ general:
 
 __main__.py:
 - proper CLI argument setup
-- change default delay for repair print (slow it down maybe)?
+- change default delay for repair print (slow it down maybe)? seriously this shit drops inputs like it's hot
 
 printpost.py:
 - option to only print bottom pixels if they're in a column you're repairing? (maybe not necessary)
