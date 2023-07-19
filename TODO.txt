@@ -47,14 +47,15 @@ printpost.py:
 			else:
 				cursordir = 0                       #0 == no movement
 			return cursordir                   
-		#move then print	
+		#move to pixel
 		cursor_movedir = movetopixel(cursor_index, pixel_index))
-		printpixel(array, cursor_index, repair, inverse)
-		#send extra inputs to make sure you're at the edge
+		#if pixel is at top/bottom, send extra inputs to make sure cursor is at the edge
 		if cursor_movedir == -1 and cursor_index == 0:    #cursor moved down to bottom of column
 			send multiple down inputs
 		elif cursor_movedir == 1 and cursor_index == 119: #cursor moved up to top
 			send multiple up inputs
+		#then print
+		printpixel(array, cursor_index, repair, inverse)
 		send right input    #move to next column
 		
 		
@@ -96,7 +97,7 @@ printpost.py:
 		#at end of line
 		printpixel(array, cursor_index, repair, inverse)
 		if cursor_index == 0 and print_movedir == -1:      #cursor is at bottom of column, printing downwards
-			send extra up/down                             #so dropped inputs don't botch the whole thing, just to be safe
+			send extra down inputs                             #so dropped inputs don't botch the whole thing, just to be safe
 		elif cursor_index == 119 and print_movedir == 1:   #cursor is at top of column, printing up
 			send extra up inputs
 		
