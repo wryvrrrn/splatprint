@@ -83,7 +83,7 @@ second pass result
 - image: required, the post you want to print; 320x120 horizontal image (doesn't need to be black and white (auto-converted based on luminance), supports any format supported by `Pillow`)
 - repair image: optional, 1280x720 screenshot of the post interface (make sure cursor is smallest and set to top left, ignores top left 2x2 pixels); also accepts a 320x120 image for tweaking purposes
 - delay: amount of time between inputs in seconds (0.1 by default), can decrease the value at the risk of higher dropped inputs
-- verbose: outputs when the program generates a macro file or macro preview file
+- verbose: outputs print mode, when the program generates a macro file or macro preview file
 - show instructions: outputs printing instructions after generating a macro (including sudo nxbt)
 
 ### Outputs

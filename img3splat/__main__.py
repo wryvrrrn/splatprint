@@ -11,16 +11,12 @@ import repairpost
 #future CLI argument stuff
 img_input = 'nkos.png'
 rpr_input = 'screenshot.jpg'
-clm_input = ''    #obsolete with repair mode integration, don't expose
-clm_min = 0
-clm_max = 319
 delay_input = ''
 delay = 0.1
-startinplace = False    #for limited column print (cursor at top of leftmost column), but column input is obsolete so
-skipemptylines = True    #there's really no downside to enabling this, don't expose
 verbose_en = True         #print lines after macro generation/preview generation (doesn't affect error output)
 show_instructions = False    #show print instructions on completion (maybe via very verbose flag?)
 repair = True    #repair mode for screenshot to file comparison
+cautious = True    #cautious mode, always prints whole columns
 
 #output vars
 nrm_macro_name = 'nrm_macro.txt'
@@ -31,31 +27,6 @@ inv_preview_name = 'inv_preview.png'
 rpr_preview_name = 'rpr_preview.png'
 
 #-----------------------------
-#validate inputs
-
-#parse column input
-try:
-    if clm_input != '':
-        try:    #if column input is one value
-            clm_min = int(clm_input)
-            clm_max = clm_min
-        except:     #if column input is two values
-            clm_list = clm_input.split("-", 1)
-            print(clm_list[0], clm_list[1])
-            clm_min = int(clm_list[0])
-            clm_max = int(clm_list[1])
-except:
-    print('Error: Invalid column input!')
-    print('Make sure values are 0-319, either [single column] or [starting column]-[ending column].') 
-    sys.exit()
-if clm_min > clm_max or clm_min < 0 or clm_max > 319:    #make sure values are in bounds
-    print('Error: Invalid column input!')
-    print('Make sure values are 0-319, either "[single column]" or "[starting column]-[ending column]".') 
-    sys.exit()
-if clm_input == '' and startinplace == True:
-    print('Error: "Start in place" must specify min/max column values.')
-    sys.exit()
-
 #validate delay input
 try:
     if delay_input != '':
@@ -114,18 +85,24 @@ if repair:
 
 #-----------------------------
 
+if verbose_en:
+    if cautious:
+        print('Printing in cautious mode!')
+    else:
+        print('Printing in fast mode!')
+
 #generate repair macro
 if repair:
-    printpost.printpost(proc_ar, rpr_macro_name, False, clm_min, clm_max, delay, startinplace, skipemptylines, True)
+    printpost.printpost(proc_ar, rpr_macro_name, False, delay, True, cautious)
     if verbose_en:
         print('Generated repair macro!')
 
 #generate normal/inverse macros
 else:
-    printpost.printpost(mainimg_ar, nrm_macro_name, False, clm_min, clm_max, delay, startinplace, skipemptylines, False)
+    printpost.printpost(mainimg_ar, nrm_macro_name, False, delay, False, cautious)
     if verbose_en:
         print('Generated macro!')
-    printpost.printpost(mainimg_ar, inv_macro_name, True, clm_min, clm_max, delay, startinplace, skipemptylines, False)
+    printpost.printpost(mainimg_ar, inv_macro_name, True, delay, False, cautious)
     if verbose_en:
         print('Generated inverse macro!')
 
@@ -146,9 +123,14 @@ else:
 
 #closing message
 if show_instructions:
-    print('''To print, open a blank plaza post (or all black if inverse), set brush to smallest, and set the
-cursor to the top left corner of the post (or at the top of the column if "print in place" is enabled).
-Then, hit the "sync" button on your controller to disconnect it.
-Make sure your Switch is in handheld mode to prevent desyncs.
-Run "sudo nxbt macro -c "splat_macro.txt" -r" or "sudo nxbt macro -c "inv_macro.txt" -r" to start the print.
-Woomy! くコ:彡''')
+    print('''To print, open a blank plaza post (or all black if inverse),
+then press the "sync" button on your controller to disconnect it.
+Make sure your Switch is in handheld mode to prevent desyncs.''')
+    if repair:
+        print('''Then, run this command to start the print:
+    sudo nxbt macro -c "rpr_macro.txt" -r''')
+    else:
+        print('''Then, run one of these commands to start the print:
+    sudo nxbt macro -c "nrm_macro.txt" -r
+    sudo nxbt macro -c "inv_macro.txt" -r''')
+    print('Woomy! くコ:彡')
