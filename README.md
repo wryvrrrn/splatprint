@@ -22,11 +22,9 @@ img3splat is a post printer for Splatoon 3 that generates macros for [NXBT](http
 
     ```img3splat [insert arguments here idk]```
 
-6. Determine what version of the macro to use. img3splat creates macros for printing on blank canvases (`nrm_macro.txt`) and all-black canvases (`inv_macro.txt`); depending on post contents, one may be significantly faster than the other.
+    img3splat creates macros for printing on blank canvases (`nrm_macro.txt`) and all-black canvases (`inv_macro.txt`); depending on post contents, one may be significantly faster than the other. img3splat will suggest which macro to use by comparing the file sizes of both.
 
-    Previews of macro prints are generated as `nrm_preview.png` and `inv_preview.png`. Blue pixels represent pixels the cursor passes over but doesn't print, while black/white (depending on macro type) indicates any printed pixels. 
-
-    Relative print speed of each macro version can be estimated based on either the cursor paths of the preview images or the overall file size of the generated macros.
+    Previews of macro prints are generated as `nrm_preview.png` and `inv_preview.png`. Blue pixels represent pixels the cursor passes over but doesn't print, while black/white (depending on macro type) indicates any printed pixels.
 
 7. Open the Splatoon post interface in horizontal mode. If you're using the inverse macro, manually paint the canvas black (touchscreen with largest brush size); otherwise, clear the canvas by pressing on the left joystick. The macro will automatically set the brush to the smallest size and move the cursor to the top left, so size/position doesn't matter. 
 
@@ -50,7 +48,7 @@ img3splat is a post printer for Splatoon 3 that generates macros for [NXBT](http
 
     The "screenshot" input accepts either a 1280x720 (Switch screenshot size) or a 320x120 image (original printed post). The second option is useful for making tweaks to a properly printed post.
 
-    Repair mode generates the repair macro `rpr_macro.txt` and the `rpr_preview.png` macro preview.
+    Repair mode generates the repair macro `rpr_macro.txt` and the `rpr_preview.png` macro preview. In the repair mode preview, A/B inputs are represented with lighter and darker shades of red rather than black and white.
 
     Do note that due to cursor interference, repair mode *will not* repair the top left 2x2 pixels of the post.
 
@@ -61,7 +59,7 @@ img3splat is a post printer for Splatoon 3 that generates macros for [NXBT](http
     The repair macro will also take a screenshot and press - to save after printing.
 
 ## Why img3splat?
-img3splat is designed for higher reliability when printing complex posts, minimizing the need for manual touchups in the case of dropped inputs.
+img3splat is designed for higher reliability when printing complex posts, minimizing the need for manual touchups.
 
 - If using fast mode (default), img3splat scans the contents of each column to minimize the amount of inputs used when printing. To reduce the effects of dropped inputs, if the last pixel in a column is located at the top or bottom of the canvas, it also sends extra up/down inputs to ensure the cursor is at the proper location.
 - If using cautious mode, printing in full columns rather than full rows reduces the area of effect of dropped inputs. Cautious mode still skips empty columns, reduced print times somewhat on unstable connections. (**maybe rephrase this?**)

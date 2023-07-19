@@ -1,6 +1,7 @@
 #import libraries
 from cmath import nan
 import sys    #for quitting the program
+import os     #for checking macro size
 from PIL import Image
 import numpy as np
 
@@ -9,9 +10,9 @@ import macropreview
 import repairpost
 
 #future CLI argument stuff
-img_input = 'nkos.png'
+img_input = 'test/bmcm.png'
 rpr_input = 'screenshot.jpg'
-delay_input = ''
+delay_input = '0.05'
 delay = 0.1
 verbose_en = True         #print lines after macro generation/preview generation (doesn't affect error output)
 show_instructions = False    #show print instructions on completion (maybe via very verbose flag?)
@@ -79,7 +80,7 @@ mainimg_ar = np.rot90(mainimg_ar, 3)
 if repair:
     proc_ar = repairpost.genrepairarray(mainimg_ar, rprimg_ar)    #creates printable array with repair instructions
     # check if proc_ar is all skip, if so, terminate program
-    if np.all(proc_ar == 2):
+    if np.all(proc_ar == 0):
         print('Error: No pixels to repair!')
         sys.exit()
 
@@ -121,7 +122,20 @@ else:
     if verbose_en:
         print('Generated inverse macro preview!')
 
-#closing message
+#get smaller macro size
+if repair == False:
+    nrm_size = os.path.getsize(nrm_macro_name)
+    inv_size = os.path.getsize(inv_macro_name)
+    if nrm_size < inv_size:
+        print('Normal macro likely has shorter print time.')
+        print('(' + str(nrm_size) + 'b vs. ' + str(inv_size) + 'b)')
+    elif nrm_size > inv_size:
+        print('Inverse macro likely has shorter print time.')
+        print('(' + str(inv_size) + 'b vs. ' + str(nrm_size) + 'b)')
+    else:
+        print('Both macros have the exact same size (somehow).')
+
+#print instructions
 if show_instructions:
     print('''To print, open a blank plaza post (or all black if inverse),
 then press the "sync" button on your controller to disconnect it.

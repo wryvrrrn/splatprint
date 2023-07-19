@@ -5,23 +5,13 @@
 *.bak
 
 # output and test images
-120.png
-rotimg.png
-proc_img.png
-bmcm.png
-bmcm_clip.png
-nkos.png
 inv_macro.txt
 nrm_macro.txt
 rpr_macro.txt
 inv_preview.png
 nrm_preview.png
 rpr_preview.png
-screenshot.jpg
-screenshot_ruler.png
-test_preview.png
-wrongsize_test.jpg
-junk_img
+test
 
 # changelog (stores what goes in git commits anyways)
 changelog.txt

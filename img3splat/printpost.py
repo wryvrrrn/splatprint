@@ -43,14 +43,14 @@ def printpost(array, inputfname, inverse, delay, repair, cautious):
                 if cursor_index == 0:               #align if cursor moved to bottom of column
                     for i in range(inputrpt):
                         inputfile.write(move_down)
-            if pixel_index > cursor_index:			#pixel is above cursor
+            elif pixel_index > cursor_index:			#pixel is above cursor
                 while cursor_index != pixel_index:
                     inputfile.write(move_up)
                     cursor_index += 1
                 if cursor_index == 119:             #align if cursor moved to top of column
                     for i in range(inputrpt):
                         inputfile.write(move_up)
-            return
+            return cursor_index
             
         def printpixel(current_row, cursor_index, repair, inverse):
             if repair:
@@ -74,11 +74,10 @@ def printpost(array, inputfname, inverse, delay, repair, cautious):
             printpxlen = np.size(printablepx)    #how many printable pixels are in the column
 
             if printpxlen == 0:                  #blank column
-                print('column is empty, moving to next column') #debug
                 inputfile.write(move_right)      #move to next column
 
             if printpxlen == 1:                  #if 1 pixel
-                movetopixel(cursor_index, printablepx[0])
+                cursor_index = movetopixel(cursor_index, printablepx[0])
                 printpixel(crtrow, cursor_index, repair, inverse)
                 inputfile.write(move_right)
             
@@ -113,7 +112,7 @@ def printpost(array, inputfname, inverse, delay, repair, cautious):
                         furthest_index = max_index
                         printdir = 1
                 #move cursor, print pixels in column
-                movetopixel(cursor_index, closest_index)
+                cursor_index = movetopixel(cursor_index, closest_index)
                 while cursor_index != furthest_index:
                     if np.any((np.isin(printablepx, cursor_index))):    #if cursor location has printable pixel
                         printpixel(crtrow, cursor_index, repair, inverse)
@@ -122,13 +121,13 @@ def printpost(array, inputfname, inverse, delay, repair, cautious):
                         cursor_index -= 1
                     else:
                         inputfile.write(move_up)
-                        cursor_index += 1			
+                        cursor_index += 1
                 #at end of line
                 if np.any((np.isin(printablepx, cursor_index))):
                     printpixel(crtrow, cursor_index, repair, inverse)
                 if cursor_index == 0 and printdir == -1:      #cursor is at bottom of column, printing downwards
                     for i in range(inputrpt):                 #so dropped inputs don't botch the whole thing, just to be safe
-                        inputfile.write(move_down)                  
+                        inputfile.write(move_down)
                 elif cursor_index == 119 and printdir == 1:   #cursor is at top of column, printing up
                     for i in range(inputrpt):                 
                         inputfile.write(move_up)
