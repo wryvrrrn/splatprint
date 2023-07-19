@@ -11,16 +11,16 @@ import repairpost
 #future CLI argument stuff
 img_input = 'nkos.png'
 rpr_input = 'screenshot.jpg'
-clm_input = ''
+clm_input = ''    #obsolete with repair mode integration, don't expose
 clm_min = 0
 clm_max = 319
 delay_input = ''
 delay = 0.1
-startinplace = False    #this is to put the cursor in place at (an) empty column(s)and it'll just print the column(s)
-skipemptylines = True
+startinplace = False    #for limited column print (cursor at top of leftmost column), but column input is obsolete so
+skipemptylines = True    #there's really no downside to enabling this, don't expose
 verbose_en = True         #print lines after macro generation/preview generation (doesn't affect error output)
 show_instructions = False    #show print instructions on completion (maybe via very verbose flag?)
-repair = False    #repair mode for screenshot to file comparison
+repair = True    #repair mode for screenshot to file comparison
 
 #output vars
 nrm_macro_name = 'nrm_macro.txt'

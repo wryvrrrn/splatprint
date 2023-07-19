@@ -5,14 +5,107 @@ general:
 - clean up junk files in project folder
 - set up demo folder (normal and inverse test images, macro preview, in-game screenshot (first pass), repair macro preview, in-game screenshot (second pass))
 - save flag? only takes screenshot image, outputs to a png (for editing a post that you've drawn in-game)
-- try nxbt with different bluetooth adapter (figure out how to disable the current one maybe?)
 
 __main__.py:
 - proper CLI argument setup
-- change default delay for repair print (slow it down maybe)? seriously this shit drops inputs like it's hot
+- remove obsolete args
 
 printpost.py:
-- option to only print bottom pixels if they're in a column you're repairing? (maybe not necessary)
+- fast mode
+	#overhauls the whole fucking thing fr, new branch stuff
+	#keep the old version as cautious but get rid of the obsolete args
+	
+	#store cursor y value as cursor_index in currently processing column array
+	#rotating image 90 degrees clockwise, so cursor_index starts at 119? since that's the top left
+	cursor_index = 119
+	
+	#for loop iterating across each column in array
+	for crtrow in array:    #row of 90 degree rotated array, so each column
+		#for current column, find index of first and last printable pixel (black for nrm, white for inverse, b/w for repair), get locations
+		
+		#if none, send right input, check next column
+		send right input
+		
+		#if one, move to pixel, then print pixel (printtopixel() is defined below)
+		#define movetopixel() (move cursor to specified pixel in column)
+		def movetopixel(cursor_index, pixel_index):
+			if pixel_index < cursor_index:			#pixel is below cursor
+				cursordir = -1                      #move direction for checking at edge; -1 == down
+				while cursor_index != pixel_index:
+					send down input                 #rotating image 90 degrees clockwise, end of column array is top of image
+					cursor_index -= 1    #move cursor index one closer
+			if pixel_index > cursor_index:			#pixel is above cursor
+				cursordir = 1                       #1 == up
+				while cursor_index != pixel_index:
+					send up input
+					cursor_index += 1
+			else:
+				cursordir = 0                       #0 == no movement
+			return cursordir                   
+		#move then print	
+		cursor_movedir = movetopixel(cursor_index, pixel_index))
+		printpixel(array, cursor_index, repair, inverse)
+		#send extra inputs to make sure you're at the edge
+		if cursor_movedir == -1 and cursor_index == 0:    #cursor moved down to bottom of column
+			send multiple down inputs
+		elif cursor_movedir == 1 and cursor_index == 119: #cursor moved up to top
+			send multiple up inputs
+		send right input    #move to next column
+		
+		
+		#if more than 2+, find whether the top or bottom pixel is closest to the cursor y value
+		closest_index = however you find this
+		furthest_index = also however you find this
+		cursor_movedir = movetopixel(cursor_index, closest_index)    #moves cursor, and saves direction
+		#aligning at edge before printing column
+		if cursor_movedir == -1 and cursor_index == 0:    #cursor moved down to bottom of column
+			send multiple down inputs
+		elif cursor_movedir == 1 and cursor_index == 119: #cursor moved up to top
+			send multiple up inputs
+		
+		#define printpixel() (print function)
+		def printpixel(array, cursor_index, repair, inverse):
+			get column array value at cursor_index
+			if printable color: (separated into repair, inverse, normal)
+				send print input
+			return
+		
+		#get print direction for alignment later
+		if cursor_index > furthest_index:     #cursor is above the last pixel to print
+			print_movedir = -1
+		elif cursor_index < furthest_index:   #cursor is below last pixel
+			print_movedir = 1
+		else:
+			print_movedir = 0                 #unnecessary, but just to be safe
+		
+		#print pixels in column
+		while cursor_index != furthest_pixel_index:
+			printpixel(array, cursor_index, repair, inverse):
+			if printdir_down:    #True == down
+				send down input
+				cursor_index -= 1
+			else:
+				send up input
+				cursor_index += 1			
+
+		#at end of line
+		printpixel(array, cursor_index, repair, inverse)
+		if cursor_index == 0 and print_movedir == -1:      #cursor is at bottom of column, printing downwards
+			send extra up/down                             #so dropped inputs don't botch the whole thing, just to be safe
+		elif cursor_index == 119 and print_movedir == 1:   #cursor is at top of column, printing up
+			send extra up inputs
+		
+		send right input    #move to next column
+		
+	#upper left, screenshot, minus
+	
 
 macropreview.py:
 - have skip color adapt to bg color on repair
+- for fast mode
+	overlaps for cursor path
+	first pass blue;
+	then, if blue and cursor input on pixel, change to red (second pass color)
+	if red and cursor input on pixel, change to green
+	shouldn't have more than 3 overlapped pixels though
+	store A + B inputs in a separate array, overlay with Pillow? (adjustable transparency)

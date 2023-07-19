@@ -36,7 +36,7 @@ def printpost(array, inputfname, inverse, prtmin, prtmax, delay, inplace, skipli
     for crtrow in array: #this iterates for every row in the 2d array
         #skip empty lines (all white or all black w/ inverse)
         if skiplines: 
-            lineskip = False    #reset on new line
+            lineskip = False    #reset on new line; lineskip is a bit confusing but eh
             if repair:
                 if np.all(crtrow == 2):    #check if 2 (skip)
                     lineskip = True
@@ -68,7 +68,7 @@ def printpost(array, inputfname, inverse, prtmin, prtmax, delay, inplace, skipli
                         inputfile.write('\nA ' + delaystr + '\n' + delaystr)
                 inputfile.write(dirstr)
         #runs at the end of the line
-        if arypos == adjprtmax:   #terminate printing if at last pixel of max line
+        if arypos == adjprtmax:   #terminate printing if at last pixel of max line; for obsolete column input
             break
         elif lineskip == False:    #at end of current row, but not final row
             for i in range(inptrpt):    #send extra directional inputs to make sure cursor is at the edge

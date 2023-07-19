@@ -1,25 +1,71 @@
 # img3splat  (insert original name here)
-img3splat is a post printer for Splatoon 3 that generates macros for [NXBT](https://github.com/Brikwerk/nxbt), allowing you to print from a Linux machine with a Bluetooth connection rather than a specialized microcontroller. img3splat is heavily inspired by [img2splat](https://github.com/JonathanNye/img2splat), but implements new features to (hopefully) increase reliability.
+img3splat is a post printer for Splatoon 3 that generates macros for [NXBT](https://github.com/Brikwerk/nxbt), allowing you to print from a Linux machine with a Bluetooth connection rather than a specialized microcontroller. img3splat is heavily inspired by [img2splat](https://github.com/JonathanNye/img2splat), but implements new features to increase reliability.
 
-## TL;DR: How to print
-- Install [NXBT](https://github.com/Brikwerk/nxbt). Due to alleged timing issues with longer macros, img3splat has only been tested with [JonathanNye's fork of NXBT](https://github.com/JonathanNye/nxbt), but it may work with the main branch. If you have errors on installation, make sure to check the "Troubleshooting" portion of NXBT's README.md.
-- Run NXBT's test function to ensure connectivity and make sure controller pairs properly
-- Install img3splat (insert pip command here)
-- Create your plaza post (320x120 image, will be auto-converted to 2-bit greyscale (no dithering))
-- run img3splat (command)
-- canvas horizontal on empty canvas (unless using "inverse", then all black), press sync button on controllers
-- run NXBT macro (command); will automatically press minus to save on completion and take a screenshot for repair mode
-- run img3splat in repair mode (command) **make sure you save the screenshot to the camera roll, don't save to clipboard!!! will jpg compress it to shit!!!!!!!!**
-- run NXBT with repair macro (command)
-- repeat if needed
+## How to print
+1. Install [JonathanNye's fork of NXBT](https://github.com/JonathanNye/nxbt/tree/experiment/busy-wait) via:
+
+    ```sudo pip install https://github.com/JonathanNye/nxbt/archive/experiment/busy-wait.zip```
+
+    Although img3splat does work with [NXBT's main branch](https://github.com/Brikwerk/nxbt), the fork fixes major timing issues and is highly recommended. If you have errors on NXBT installation, make sure to check the "Troubleshooting" portion of NXBT's README.md.
+
+2. Run NXBT's test function to make sure the virtual controller syncs properly:
+
+     ```sudo nxbt demo```
+
+3. Install img3splat via:
+
+    ```pip install (insert command idk)```
+
+4. Create a 320x120 horizontal image to serve as your plaza post. Images don't necessarily have to be 2-bit grayscale, as they will be automatically converted based on luminance, but dithering *will not* be applied. Processing such images to grayscale beforehand is highly recommended. Any format readable by `Pillow` is supported.
+
+5. Run img3splat:
+
+    ```img3splat [insert arguments here idk]```
+
+6. Determine what version of the macro to use. img3splat creates macros for printing on blank canvases (`nrm_macro.txt`) and all-black canvases (`inv_macro.txt`); depending on post contents, one may be significantly faster than the other.
+
+    Previews of macro prints are generated as `nrm_preview.png` and `inv_preview.png`. Blue pixels represent pixels the cursor passes over but doesn't print, while black/white (depending on macro type) indicates any printed pixels. 
+
+    Relative print speed of each macro version can be estimated based on either the cursor paths of the preview images or the overall file size of the generated macros.
+
+7. Open the Splatoon post interface in horizontal mode. If you're using the inverse macro, manually paint the canvas black (touchscreen with largest brush size); otherwise, clear the canvas by pressing on the left joystick. The macro will automatically set the brush to the smallest size and move the cursor to the top left, so size/position doesn't matter. 
+
+8. Undock your Switch, as any change in HDMI input will drop inputs for a short period. If using a longer macro, you may want to remove the USB-C cable from the dock and plug it directly into the Switch.
+
+9. Press the sync button on your controller(s) to enter the "Press L+R on the controller." menu. Then, run the NXBT macro via:
+
+    ```sudo nxbt macro -c "nrm_macro.txt" -r```
+    
+    or
+
+    ```sudo nxbt macro -c "inv_macro.txt" -r```
+
+    The macro will automatically press - to save the image on completion.
+    
+10. If you run into any errors with your print, or if you want to make tweaks to the image after the fact, you can run img3splat in *repair mode*, which automatically detects wrong pixels from an in-game screenshot. Running a print macro will automatically save a screenshot to the Switch's album to use with repair mode.
+
+    If you're transferring the screenshot via the Switch's "Send to Smartphone" feature, make sure to **save the image to your phone** rather than copying it to your phone's clipboard. Copying the image to clipboard introduces significant jpg compression, interfering with image recognition (at least on iOS).
+
+    ```img3splat [repair mode command]```
+
+    The "screenshot" input accepts either a 1280x720 (Switch screenshot size) or a 320x120 image (original printed post). The second option is useful for making tweaks to a properly printed post.
+
+    Repair mode generates the repair macro `rpr_macro.txt` and the `rpr_preview.png` macro preview.
+
+    Do note that due to cursor interference, repair mode *will not* repair the top left 2x2 pixels of the post.
+
+11. With the post open, press the sync button on your controller(s) to enter the "Press L+R on the controller." menu. Then, run the repair macro via:
+
+    ```sudo nxbt macro -c "rpr_macro.txt" -r```
+
+    The repair macro will also take a screenshot and press - to save after printing.
 
 ## Why img3splat?
-img3splat is designed for higher reliability when printing complex posts, minimizing the need for manual touchups due to dropped inputs. This sacrifices some speed, but the program has some optimizations in place to reduce print time for simpler posts.
+img3splat is designed for higher reliability when printing complex posts, minimizing the need for manual touchups in the case of dropped inputs.
 
-- printing in full columns reduces the area of effect of dropped inputs (as cursor is aligned at the edge more frequently), reducing print time for repair operations
-- skips empty columns rather than taking a naive approach, reducing print time
-- supports taking a screenshot of the Splatoon post interface to check for errors, generates a repair macro that only targets the affected columns
-- repair macro also easily allows for small tweaks to the original image without reprinting the whole thing
+- If using fast mode (default), img3splat scans the contents of each column to minimize the amount of inputs used when printing. To reduce the effects of dropped inputs, if the last pixel in a column is located at the top or bottom of the canvas, it also sends extra up/down inputs to ensure the cursor is at the proper location.
+- If using cautious mode, printing in full columns rather than full rows reduces the area of effect of dropped inputs. Cautious mode still skips empty columns, reduced print times somewhat on unstable connections. (**maybe rephrase this?**)
+- img3splat supports taking a screenshot of the Splatoon post interface to check for errors, generating a repair macro that fixes any incorrect pixels. This also allows for tweaks to the original image without restarting the whole printing process.
 
 ## Print demo (what to expect)
 original image
@@ -35,11 +81,8 @@ second pass result
 ## Arguments/outputs
 ### Arguments
 - image: required, the post you want to print; 320x120 horizontal image (doesn't need to be black and white (auto-converted based on luminance), supports any format supported by `Pillow`)
-- repair image: optional, 1280x720 screenshot of the post interface (make sure cursor is smallest and set to top left, ignores top left 2x2 pixels); also accepts a 320x120 image if you already processed it for some reason
-- override last row detection (repair): useful if the program isn't detecting the last row of the screenshot image properly (as it's one line of pixels with color bleed due to jpg compression); reprints the bottom pixel of any column that otherwise requires repair, ignores them otherwise regardless of what color they're detected as 
-- delay: amount of time between inputs in seconds (0.1 by default), can decrease to increase speed at the risk of higher dropped inputs
-- columns: single column or min-max, will only print those columns (assumes columns are empty); likely unneeded with repair function
-- start in place: requires column input, will print assuming your cursor is at the top of the leftmost column you're printing at rather than starting at
+- repair image: optional, 1280x720 screenshot of the post interface (make sure cursor is smallest and set to top left, ignores top left 2x2 pixels); also accepts a 320x120 image for tweaking purposes
+- delay: amount of time between inputs in seconds (0.1 by default), can decrease the value at the risk of higher dropped inputs
 - verbose: outputs when the program generates a macro file or macro preview file
 - show instructions: outputs printing instructions after generating a macro (including sudo nxbt)
 
@@ -51,7 +94,7 @@ second pass result
 ## Dependencies
 img3splat uses `NumPy` and `Pillow`, both of which should be automatically installed on img3splat installation.
 
-To run the generated macros, you also need [NXBT](https://github.com/Brikwerk/nxbt) or [JonathanNye's NXBT fork](https://github.com/JonathanNye/nxbt) (which supposedly fixes some timing issues with longer macros).
+To run the generated macros, you also need [JonathanNye's NXBT fork](https://github.com/JonathanNye/nxbt/tree/experiment/busy-wait) (highly recommended to fix timing issues) or standard [NXBT](https://github.com/Brikwerk/nxbt).
 
 ## Issues
 this shit is mostly just for personal use I'm only planning on implementing what i need
