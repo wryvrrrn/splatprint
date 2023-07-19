@@ -7,6 +7,10 @@ def printpost(array, inputfname, inverse, delay, repair, cautious):
     delaystr = str(delay) + 's'
     inputrpt = 3    #input repeat, number of extra inputs to send at the end of a line
 
+    #invert normal array (to allow for np.nonzeros?) white == True and skip white so swap colors
+    if inverse == False and repair == False:
+        array = np.invert(array)
+
     #set up initial delay and A press on connect screen
     inputfile.write('3.0s')
     inputfile.write('\nA ' + delaystr)
@@ -29,17 +33,10 @@ def printpost(array, inputfname, inverse, delay, repair, cautious):
         dirstr = '\nDPAD_DOWN ' + delaystr + '\n' + delaystr    #direction string, either "DPAD_DOWN [delay]s" or "DPAD_UP [delay]s" + delay
         #process the image array
         for crtrow in array: #this iterates for every row in the 2d array
-            #skip empty lines (all white or all black w/ inverse)
+            #skip empty lines
             skip_line = False    #reset on new line
-            if repair:
-                if np.all(crtrow == 2):    #check if 2 (skip)
-                    skip_line = True
-            elif inverse:
-                if np.any(crtrow) == False:    #check if any white pixels exist
-                    skip_line = True
-            else:
-                if np.all(crtrow):    #check if all white pixels
-                    skip_line = True
+            if np.all(crtrow==0):    #if row is all non-printing (0 for repair, False for nrm/inv)
+                skip_line = True
             if skip_line:
                 inputfile.write('\nDPAD_RIGHT ' + delaystr + '\n' + delaystr)    #skip, move to next column
             #print the column
@@ -50,15 +47,15 @@ def printpost(array, inputfname, inverse, delay, repair, cautious):
                     procrow = crtrow    #if flipping isn't needed, make intact row the processed row
                 for x in procrow:    #iterate over the row
                     if repair:
-                        if x == 0:
+                        if x == 1:    #1 == erase
                             inputfile.write('\nB ' + delaystr + '\n' + delaystr)
-                        elif x == 1:
+                        elif x == 2:    #2 == ink
                             inputfile.write('\nA ' + delaystr + '\n' + delaystr)
                     elif inverse:    #if inverse, erase when True (white)
                         if x:
                             inputfile.write('\nB ' + delaystr + '\n' + delaystr)
-                    else:    #normal mode, ink when False (black)
-                        if x == False:
+                    else:    #normal mode, ink when True (since flipped array)
+                        if x:
                             inputfile.write('\nA ' + delaystr + '\n' + delaystr)
                     inputfile.write(dirstr)
             #runs at the end of the line

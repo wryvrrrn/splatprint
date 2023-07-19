@@ -15,7 +15,7 @@ delay_input = ''
 delay = 0.1
 verbose_en = True         #print lines after macro generation/preview generation (doesn't affect error output)
 show_instructions = False    #show print instructions on completion (maybe via very verbose flag?)
-repair = True    #repair mode for screenshot to file comparison
+repair = False    #repair mode for screenshot to file comparison
 cautious = True    #cautious mode, always prints whole columns
 
 #output vars

@@ -15,6 +15,7 @@ printpost.py:
 	- however processed image to array (both norm/inv and repair) are both 2d arrays
 	- repair_array[0] returns 120-long array filled with 0, 1, or 2; can go from repair_array[0] to repair_array[319]
 	- same for nrm/inv_array[0], just with true/false
+	- in both cases, checking for 0s (numpy.nonzeros) shows all non-printing pixels
 - fast mode
 	#overhauls the whole fucking thing fr, new branch stuff
 	#keep the old version as cautious but get rid of the obsolete args
