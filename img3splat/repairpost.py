@@ -1,17 +1,12 @@
 from PIL import Image
 import numpy as np
 
-#vars
-
-
-#funcs
-
-#debug
-def rotimgarray(image):
-    image = image.convert('1')
-    imgar = np.array(image)
-    imgar = np.rot90(image, 3)
-    return imgar
+# #debug
+# def rotimgarray(image):
+#     image = image.convert('1')
+#     imgar = np.array(image)
+#     imgar = np.rot90(image, 3)
+#     return imgar
 
 
 def procrepair(image):    #takes in 320x120 or screenshot, outputs 320x120 rotated np array
@@ -57,9 +52,9 @@ def genrepairarray(main_ar, rpr_ar):    #generates repair array (proc_ar)
 
 
 # #debug
-# img = Image.open('nkos.png')
-# rprimg = Image.open('screenshot.jpg')
+# img = Image.open('test/nkos.png')
+# rprimg = Image.open('test/screenshot.jpg')
 # main_ar = rotimgarray(img)
 # rpr_ar = procrepair(rprimg)
 # proc_ar = genrepairarray(main_ar, rpr_ar)
-# Image.fromarray(proc_ar).save('proc_img.png')
+# Image.fromarray(proc_ar).save('test/proc_img.png')

@@ -11,7 +11,7 @@ import repairpost
 
 #future CLI argument stuff
 img_input = 'test/bmcm.png'
-rpr_input = 'screenshot.jpg'
+rpr_input = 'test/screenshot.jpg'
 delay_input = '0.05'
 delay = 0.1
 verbose_en = True         #print lines after macro generation/preview generation (doesn't affect error output)

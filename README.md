@@ -89,7 +89,7 @@ Standard usage of img3splat is as follows:
 
     Lowering this value will increase the speed of macro execution at the risk of more dropped inputs. If you're printing longer macros and have a stable connection, it may be useful to start with a smaller delay to print the bulk of the post and do a second pass in repair mode with the default value.
 
-- `-c`: Cautious. If enabled, img3splat will pass the cursor through the entire column of any columns that contain printable pixels rather than moving to the next column after reaching the last printable pixel. This reduces the effects of any dropped inputs, as img3splat sends extra inputs at the end of a column to ensure the cursor is aligned with the top/bottom of the image, but usually significantly increases print time.
+- `-c`: Cautious. If enabled, img3splat will pass the cursor through the entire column of any columns that contain printable pixels rather than moving to the next column after reaching the last printable pixel. This reduces the effects of any dropped inputs, as img3splat sends extra inputs at the end of a column to ensure the cursor is aligned with the top/bottom of the image, but usually significantly increases print time. However, enabling this does significantly reduce macro generation time.
 
 - `-v`: Verbose. If enabled, img3splat will print messages when the program generates a macro file or macro preview file. img3splat will still recommend a macro to use with this flag disabled.
 
