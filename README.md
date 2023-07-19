@@ -1,12 +1,11 @@
 # img3splat  (insert original name here)
-img3splat is a post printer for Splatoon 3 that generates macros for [NXBT](https://github.com/Brikwerk/nxbt), allowing you to print from a Linux machine with a Bluetooth connection rather than a specialized microcontroller. img3splat is heavily inspired by [img2splat](https://github.com/JonathanNye/img2splat), but implements new features to increase reliability.
-
+img3splat is a post printer for Splatoon 3 that generates macros for [NXBT](https://github.com/Brikwerk/nxbt), allowing you to print from a Linux machine with a Bluetooth connection rather than a specialized microcontroller. img3splat is heavily inspired by [img2splat](https://github.com/JonathanNye/img2splat), but fixes syncing issues and implements new features to increase reliability.
 ## How to print
 1. Install [JonathanNye's fork of NXBT](https://github.com/JonathanNye/nxbt/tree/experiment/busy-wait) via:
 
     ```sudo pip install https://github.com/JonathanNye/nxbt/archive/experiment/busy-wait.zip```
 
-    Although img3splat does work with [NXBT's main branch](https://github.com/Brikwerk/nxbt), the fork fixes major timing issues and is highly recommended. If you have errors on NXBT installation, make sure to check the "Troubleshooting" portion of NXBT's README.md.
+    Although img3splat does work with [NXBT's main branch](https://github.com/Brikwerk/nxbt), the fork is very highly recommended as it fixes major timing issues. If you have errors on NXBT installation, make sure to check the "Troubleshooting" portion of NXBT's README.md.
 
 2. Run NXBT's test function to make sure the virtual controller syncs properly:
 
@@ -20,17 +19,19 @@ img3splat is a post printer for Splatoon 3 that generates macros for [NXBT](http
 
 5. Run img3splat:
 
-    ```img3splat [insert arguments here idk]```
+    ```img3splat "image.png"```
+
+    Additional optional flags are listed under "Usage" below.
 
     img3splat creates macros for printing on blank canvases (`nrm_macro.txt`) and all-black canvases (`inv_macro.txt`); depending on post contents, one may be significantly faster than the other. img3splat will suggest which macro to use by comparing the file sizes of both.
 
     Previews of macro prints are generated as `nrm_preview.png` and `inv_preview.png`. Blue pixels represent pixels the cursor passes over but doesn't print, while black/white (depending on macro type) indicates any printed pixels.
 
-7. Open the Splatoon post interface in horizontal mode. If you're using the inverse macro, manually paint the canvas black (touchscreen with largest brush size); otherwise, clear the canvas by pressing on the left joystick. The macro will automatically set the brush to the smallest size and move the cursor to the top left, so size/position doesn't matter. 
+6. Open the Splatoon post interface in horizontal mode. If you're using the inverse macro, manually paint the canvas black (touchscreen with largest brush size); otherwise, clear the canvas by pressing on the left joystick. The macro will automatically set the brush to the smallest size and move the cursor to the top left, so size/position doesn't matter. 
 
-8. Undock your Switch, as any change in HDMI input will drop inputs for a short period. If using a longer macro, you may want to remove the USB-C cable from the dock and plug it directly into the Switch.
+7. Undock your Switch, as any change in HDMI input will drop inputs for a short period. If using a longer macro, you may want to remove the USB-C cable from the dock and plug it directly into the Switch.
 
-9. Press the sync button on your controller(s) to enter the "Press L+R on the controller." menu. Then, run the NXBT macro via:
+8. Press the sync button on your controller(s) and wait until the screen shows the "Press L+R on the controller." menu. Then, run the NXBT macro via:
 
     ```sudo nxbt macro -c "nrm_macro.txt" -r```
     
@@ -40,11 +41,11 @@ img3splat is a post printer for Splatoon 3 that generates macros for [NXBT](http
 
     The macro will automatically press - to save the image on completion.
     
-10. If you run into any errors with your print, or if you want to make tweaks to the image after the fact, you can run img3splat in *repair mode*, which automatically detects wrong pixels from an in-game screenshot. Running a print macro will automatically save a screenshot to the Switch's album to use with repair mode.
+9. If you run into any errors with your print, or if you want to make tweaks to the image after the fact, you can run img3splat in *repair mode*, which automatically detects wrong pixels from an in-game screenshot. Running a print macro will automatically save a screenshot to the Switch's album to use with repair mode.
 
     If you're transferring the screenshot via the Switch's "Send to Smartphone" feature, make sure to **save the image to your phone** rather than copying it to your phone's clipboard. Copying the image to clipboard introduces significant jpg compression, interfering with image recognition (at least on iOS).
 
-    ```img3splat [repair mode command]```
+    ```img3splat "image.png" -r "screenshot.jpg"```
 
     The "screenshot" input accepts either a 1280x720 (Switch screenshot size) or a 320x120 image (original printed post). The second option is useful for making tweaks to a properly printed post.
 
@@ -52,7 +53,7 @@ img3splat is a post printer for Splatoon 3 that generates macros for [NXBT](http
 
     Do note that due to cursor interference, repair mode *will not* repair the top left 2x2 pixels of the post.
 
-11. With the post open, press the sync button on your controller(s) to enter the "Press L+R on the controller." menu. Then, run the repair macro via:
+10. Like before, disconnect your controllers with the post open. Then, run the repair macro via:
 
     ```sudo nxbt macro -c "rpr_macro.txt" -r```
 
@@ -61,11 +62,11 @@ img3splat is a post printer for Splatoon 3 that generates macros for [NXBT](http
 ## Why img3splat?
 img3splat is designed for higher reliability when printing complex posts, minimizing the need for manual touchups.
 
-- If using fast mode (default), img3splat scans the contents of each column to minimize the amount of inputs used when printing. To reduce the effects of dropped inputs, if the last pixel in a column is located at the top or bottom of the canvas, it also sends extra up/down inputs to ensure the cursor is at the proper location.
-- If using cautious mode, printing in full columns rather than full rows reduces the area of effect of dropped inputs. Cautious mode still skips empty columns, reduced print times somewhat on unstable connections. (**maybe rephrase this?**)
-- img3splat supports taking a screenshot of the Splatoon post interface to check for errors, generating a repair macro that fixes any incorrect pixels. This also allows for tweaks to the original image without restarting the whole printing process.
+- In fast mode (default), img3splat scans the contents of each column to minimize the amount of inputs used when printing. To reduce the effects of dropped inputs, if the last pixel in a column is located at the top or bottom of the canvas, it also sends extra up/down inputs to ensure the cursor is at the proper location.
+- img3splat also has cautious mode, which prints in full columns to minimize the effects of dropped inputs. Printing in columns (rather than rows) allows the cursor to be aligned more frequently, reducing the area of effect of dropped inputs. 
+- In case of errors, img3splat supports taking a screenshot of the Splatoon post interface to generate a repair macro that fixes any incorrect pixels. This feature can also be used to tweak the original image without printing the image from scratch.
 
-## Print demo (what to expect)
+## Demonstration
 original image
 
 generated macro and inverse previews, blue indicates cursor travel, black (for macro) or white (for inverse) indicates printed pixels
@@ -76,23 +77,43 @@ repair macro preview
 
 second pass result
 
-## Arguments/outputs
+## Usage
 ### Arguments
-- image: required, the post you want to print; 320x120 horizontal image (doesn't need to be black and white (auto-converted based on luminance), supports any format supported by `Pillow`)
-- repair image: optional, 1280x720 screenshot of the post interface (make sure cursor is smallest and set to top left, ignores top left 2x2 pixels); also accepts a 320x120 image for tweaking purposes
-- delay: amount of time between inputs in seconds (0.1 by default), can decrease the value at the risk of higher dropped inputs
-- verbose: outputs print mode, when the program generates a macro file or macro preview file
-- show instructions: outputs printing instructions after generating a macro (including sudo nxbt)
+Standard usage of img3splat is as follows:
+
+`img3splat "input.png"`
+
+- `"input.png"` (required): is a 320x120 image of the post you want to print. img3splat will convert the image to black and white automatically (based on luminance), but will not apply dithering for any RGB/grayscale images. This can be in any format supported by `Pillow`, but a lossless format (like `.png`) is recommended.
+
+- `-d 0.1`: Delay, in seconds. Indicates the amount of time a button is pressed, as well as the amount of time the macro waits before inputting another button press. If not specified, will use the default value of 0.1.
+
+    Lowering this value will increase the speed of macro execution at the risk of more dropped inputs. If you're printing longer macros and have a stable connection, it may be useful to start with a smaller delay to print the bulk of the post and do a second pass in repair mode with the default value.
+
+- `-c`: Cautious. If enabled, img3splat will pass the cursor through the entire column of any columns that contain printable pixels rather than moving to the next column after reaching the last printable pixel. This reduces the effects of any dropped inputs, as img3splat sends extra inputs at the end of a column to ensure the cursor is aligned with the top/bottom of the image, but usually significantly increases print time.
+
+- `-v`: Verbose. If enabled, img3splat will print messages when the program generates a macro file or macro preview file. img3splat will still recommend a macro to use with this flag disabled.
+
+- `-s`: Show instructions. If enabled, img3splat will print instructions on how to print the generated macros, including post setup and the commands for running the macro file with NXBT.
+
+Repair mode usage is as follows:
+
+`img3splat "input.png" -r "screenshot.jpg"`
+
+- `input.png` (required): The 320x120 image that img3splat will correct the post to. Usually the original image used to generate macro in normal operation, but you can also use a revised version of the original to make tweaks to the post. Supported formats and color space are identical to standard operation.
+
+- `-r`: Runs img3splat in repair mode. This generates a macro file that targets any pixels that were inputted incorrectly in-game.
+
+- `screenshot.jpg` (required with `-r`): An image of the in-game post. Must either be a 1280x720 screenshot of the post interface, taken with the Switch's capture button, or a 320x120 image of the post. The images saved to the Switch's album after publishing a post are not supported.
+
+    Screenshots should be taken with the canvas set horizontally, the brush size set to smallest, and the cursor placed in the top left. However, manual screenshots usually aren't needed; macros generated by img3splat will automatically save an appropriate screenshot at the end of execution. See "How to print" above for some details on how to best transfer the screenshot to your computer while minimizing compression.
+- `-c`, `-v`, and `-s`: Function identically to standard operation.
 
 ### Outputs
-- `nrm_macro.txt` and `inv_macro.txt`: macro files generated when running the program normally; `nrm_macro.txt` is for a blank canvas, `inv_macro.txt` is for an all-black canvas
-- `rpr_macro.txt`: macro file generated when running in repair mode, assumes in-game post is same as screenshot
-- `nrm_preview.png`, `inv_preview.png`, and `rpr_preview.png`: preview of cursor movement during macro execution; for nrm, white = untouched by cursor, blue = passed over by cursor, black = ink; for inv, black = untouched by cursor, blue = passed over by cursor, white = erase; for repair, gray = untouched by cursor, blue = passed over by cursor, black = ink, white = erase
+- `nrm_macro.txt` and `inv_macro.txt`: Macro files generated when running the program normally. `nrm_macro.txt` is intended for printing on a blank canvas, and `inv_macro.txt` is intended for an all-black canvas.
+- `rpr_macro.txt`: Macro file generated when running in repair mode.
+- `nrm_preview.png`, `inv_preview.png`, and `rpr_preview.png`: Previews of macro execution. Blue pixels represent pixels the cursor will pass over but not print. For `nrm_preview.png`, pixels to be printed are marked in black, while untouched pixels are marked in white; for `inv_preview.png`, pixels are marked the opposite color. For `rpr_preview.png`, untouched pixels are marked by their color in the original post while printed pixels are marked in lighter and darker shades of red.
 
 ## Dependencies
 img3splat uses `NumPy` and `Pillow`, both of which should be automatically installed on img3splat installation.
 
-To run the generated macros, you also need [JonathanNye's NXBT fork](https://github.com/JonathanNye/nxbt/tree/experiment/busy-wait) (highly recommended to fix timing issues) or standard [NXBT](https://github.com/Brikwerk/nxbt).
-
-## Issues
-this shit is mostly just for personal use I'm only planning on implementing what i need
+To run the generated macros, you also need [JonathanNye's NXBT fork](https://github.com/JonathanNye/nxbt/tree/experiment/busy-wait) (highly recommended to fix timing issues) or the standard version of [NXBT](https://github.com/Brikwerk/nxbt).

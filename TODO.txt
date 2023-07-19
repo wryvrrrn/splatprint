@@ -1,15 +1,17 @@
-placeholder lines/lines that need work are generally commented with #(WIP)
-
 general:
 - set up command line switches
-- clean up junk files in project folder
+- set up pip and github
 - set up demo folder (normal and inverse test images, macro preview, in-game screenshot (first pass), repair macro preview, in-game screenshot (second pass))
 - save flag? only takes screenshot image, outputs to a png (for editing a post that you've drawn in-game)
 
 __main__.py:
 - proper CLI argument setup
 
-macropreview.py:
+README:
+- pip installation command
+- demonstration: normal or inverse preview, in-game screenshot (first pass), repair macro preview (if applicable), second pass (if applicable)
+
+macropreview.py: (low priority)
 - have skip color adapt to bg color on repair
 - for fast mode
 	overlaps for cursor path
