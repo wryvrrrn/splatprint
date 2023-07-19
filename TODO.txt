@@ -11,6 +11,11 @@ __main__.py:
 - remove obsolete args
 
 printpost.py:
+- first figure out how the hell this array stuff works; trying to get first line returns like, 3x120 or something????
+	- it was because turning an rgb image into an np array generates a 3d array you dumbass
+	- however processed image to array (both norm/inv and repair) are both 2d arrays
+	- repair_array[0] returns 120-long array filled with 0, 1, or 2; can go from repair_array[0] to repair_array[319]
+	- same for nrm/inv_array[0], just with true/false
 - fast mode
 	#overhauls the whole fucking thing fr, new branch stuff
 	#keep the old version as cautious but get rid of the obsolete args
