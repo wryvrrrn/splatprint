@@ -16,7 +16,7 @@ delay = 0.1
 verbose_en = True         #print lines after macro generation/preview generation (doesn't affect error output)
 show_instructions = False    #show print instructions on completion (maybe via very verbose flag?)
 repair = False    #repair mode for screenshot to file comparison
-cautious = True    #cautious mode, always prints whole columns
+cautious = False    #cautious mode, always prints whole columns
 
 #output vars
 nrm_macro_name = 'nrm_macro.txt'
