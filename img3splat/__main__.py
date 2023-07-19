@@ -10,14 +10,16 @@ import macropreview
 import repairpost
 
 #future CLI argument stuff
-img_input = 'test/bmcm.png'
+img_input = 'test/nkos.png'
 rpr_input = 'test/screenshot.jpg'
-delay_input = '0.05'
+delay_input = ''
 delay = 0.1
 verbose_en = True         #print lines after macro generation/preview generation (doesn't affect error output)
-show_instructions = False    #show print instructions on completion (maybe via very verbose flag?)
-repair = False    #repair mode for screenshot to file comparison
+print_instructions = False    #show print instructions on completion (maybe via very verbose flag?)
+repair = True    #repair mode for screenshot to file comparison
 cautious = False    #cautious mode, always prints whole columns
+save = False    #save mode for saving screenshots to a 320x120 image.
+                 #note: mutually exclusive with -r or input.png
 
 #output vars
 nrm_macro_name = 'nrm_macro.txt'
@@ -26,30 +28,36 @@ rpr_macro_name = 'rpr_macro.txt'
 nrm_preview_name = 'nrm_preview.png'
 inv_preview_name = 'inv_preview.png'
 rpr_preview_name = 'rpr_preview.png'
+scr_name = 'proc_screenshot.png'    #1280x720 screenshot processed to 320x120
 
 #-----------------------------
-#validate delay input
-try:
-    if delay_input != '':
-        delay = float(delay_input)
-except:
-    print('Error: Invalid delay input! Not a number.')
-    sys.exit()
-if delay <= 0:
-    print('Error: Invalid delay input! Must be greater than 0.')
-    sys.exit()
-elif delay >= 0.5:
-    print('Delay value is large, print might take a while.')
+#save mode validation
+#if save, detect if repair, etc. is enabled, error out if so
+#only flag is verbose
 
-#open main image, convert to bilevel, test integrity (exit if invalid)
-try:
-    mainimg = Image.open(img_input).convert('1')
-except:
-    print("Error: Invalid file! Image isn't recognized or doesn't exist.")
-    sys.exit()
-if mainimg.size != (320,120):    #check image size (exit if wrong size)
-    print('Error: Image is not 320x120!')
-    sys.exit()
+#validate delay input for main/repair mode
+if save == False:
+    try:
+        if delay_input != '':
+            delay = float(delay_input)
+    except:
+        print('Error: Invalid delay input! Not a number.')
+        sys.exit()
+    if delay <= 0:
+        print('Error: Invalid delay input! Must be greater than 0.')
+        sys.exit()
+    elif delay >= 0.5:
+        print('Delay value is large, print might take a while.')
+
+    #open main image, convert to bilevel, test integrity (exit if invalid)
+    try:
+        mainimg = Image.open(img_input).convert('1')
+    except:
+        print("Error: Invalid file! Image isn't recognized or doesn't exist.")
+        sys.exit()
+    if mainimg.size != (320,120):    #check image size (exit if wrong size)
+        print('Error: Image is not 320x120!')
+        sys.exit()
 
 #open repair image, check size
 if repair:
@@ -62,13 +70,32 @@ if repair:
         print('Error: Repair image is not 1280x720 or 320x120!')
         sys.exit()
 
+if save:
+    try:
+        rprimg = Image.open(rpr_input)
+    except:
+        print("Error: Invalid screenshot file! Image isn't recognized or doesn't exist.")
+        sys.exit()
+    if (rprimg.size == (1280,720)) == False:
+        print('Error: Screenshot image is not 1280x720!')
+        sys.exit()
+
 #-----------------------------
 
 # generate 320x120 rotated image from repair image
-if repair:
+if repair or save:
     rpr_out = repairpost.procrepair(rprimg)    #returns (rotated array, processed screenshot image)
     rprimg_ar = rpr_out[0]
     scrimg = rpr_out[1]
+
+#-----------------------------
+
+# if save, save screenshot and exit
+if save:
+    scrimg.save(scr_name)
+    if verbose_en:
+        print('Saved processed image from screenshot!')
+    sys.exit()
 
 #-----------------------------
 
@@ -136,7 +163,7 @@ if repair == False:
         print('Both macros have the exact same size (somehow).')
 
 #print instructions
-if show_instructions:
+if print_instructions:
     print('''To print, open a blank plaza post (or all black if inverse),
 then press the "sync" button on your controller to disconnect it.
 Make sure your Switch is in handheld mode to prevent desyncs.''')

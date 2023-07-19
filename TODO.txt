@@ -6,6 +6,8 @@ general:
 
 __main__.py:
 - proper CLI argument setup
+- validate arguments for save mode (although ignoring them just works well enough tbh)
+- depending on CLI implementation, have a separate input for save mode? later just make rprimg = saveimg if save == True though
 
 README:
 - pip installation command
