@@ -25,3 +25,8 @@ test.py
 
 # pycache
 __pycache__
+
+# build-related
+build
+dist
+*.egg-info

@@ -1,6 +1,4 @@
 #import libraries
-from ast import arg
-from cmath import nan
 import sys    #for quitting the program
 import os     #for checking macro size
 from PIL import Image
@@ -213,10 +211,10 @@ if repair:
     if verbose_en:
         print('Generated repair macro preview!')
 else:
-    macropreview.preview(nrm_macro_name, nrm_preview_name, False, False, None)
+    macropreview.preview(nrm_macro_name, nrm_preview_name, False, False, False)
     if verbose_en:
         print('Generated macro preview!')
-    macropreview.preview(inv_macro_name, inv_preview_name, True, False, None)
+    macropreview.preview(inv_macro_name, inv_preview_name, True, False, False)
     if verbose_en:
         print('Generated inverse macro preview!')
 

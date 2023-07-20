@@ -1,6 +1,6 @@
 general:
 - set up pip and github
-- set up demo folder (normal and inverse test images, macro preview, in-game screenshot (first pass), repair macro preview, in-game screenshot (second pass))
+- set up demo folder (with actual legit images)
 - check performance on lower-end devices
 
 __main__.py:
@@ -10,7 +10,7 @@ README:
 - pip installation command
 - demonstration: normal or inverse preview, in-game screenshot (first pass), repair macro preview (if applicable), second pass (if applicable)
 
-macropreview.py: (vanity, low priority)
+macropreview.py: (vanity, low priority (probably won't implement tbh))
 - have skip color adapt to bg color on repair
 - for fast mode
 	overlaps for cursor path
