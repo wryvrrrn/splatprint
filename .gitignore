@@ -14,11 +14,9 @@ rpr_preview.png
 proc_screenshot.png
 test
 
-# changelog (stores what goes in git commits anyways)
-changelog.txt
-
 # needed because I'm not very smart
 git_instructions.txt
+pip_instructions.txt
 
 # test.py (for testing purposes only)
 test.py
