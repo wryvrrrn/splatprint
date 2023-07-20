@@ -1,9 +1,6 @@
 # Splatprint
 Splatprint is a post printer for Splatoon 3 that allows you to print images without a specialized microcontroller, only requiring a Linux machine with a Bluetooth connection (or a Windows/Mac machine with an external Bluetooth adapter running a Linux VM). More specifically, splatprint generates macros for [NXBT](https://github.com/Brikwerk/nxbt), which handles the actual printing process. Splatprint is heavily inspired by (but wholly independent from) [img2splat](https://github.com/JonathanNye/img2splat), but fixes some issues and allows misprints to be repaired from a screenshot.
 
-## Status
-Probably not functional yet, need to confirm command-line is functional when installing via pip
-
 ## How to print
 1. Install [JonathanNye's fork of NXBT](https://github.com/JonathanNye/nxbt/tree/experiment/busy-wait) via:
 
