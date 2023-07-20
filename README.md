@@ -69,15 +69,8 @@ img3splat is designed for higher reliability when printing complex posts, minimi
 - img3splat can also save the post contents of a screenshot to a 320x120 image, allowing you to rough out a post on the touchscreen and polish it in an image editor (useful if you don't have a drawing tablet).
 
 ## Demonstration
-original image
 
-generated macro and inverse previews, blue indicates cursor travel, black (for macro) or white (for inverse) indicates printed pixels
-
-first pass result
-
-repair macro preview
-
-second pass result
+[insert images here]
 
 ## Usage
 ### Arguments

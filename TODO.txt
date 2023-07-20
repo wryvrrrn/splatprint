@@ -1,19 +1,16 @@
 general:
-- set up command line switches
 - set up pip and github
 - set up demo folder (normal and inverse test images, macro preview, in-game screenshot (first pass), repair macro preview, in-game screenshot (second pass))
-- save flag? only takes screenshot image, outputs to a png (for editing a post that you've drawn in-game)
+- check performance on lower-end devices
 
 __main__.py:
-- proper CLI argument setup
-- validate arguments for save mode (although ignoring them just works well enough tbh)
-- depending on CLI implementation, have a separate input for save mode? later just make rprimg = saveimg if save == True though
+- make sure inputs/outputs are based on path, not project folder
 
 README:
 - pip installation command
 - demonstration: normal or inverse preview, in-game screenshot (first pass), repair macro preview (if applicable), second pass (if applicable)
 
-macropreview.py: (low priority)
+macropreview.py: (vanity, low priority)
 - have skip color adapt to bg color on repair
 - for fast mode
 	overlaps for cursor path
