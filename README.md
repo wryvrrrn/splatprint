@@ -1,5 +1,5 @@
 # img3splat  (insert original name here)
-img3splat is a post printer for Splatoon 3 that generates macros for [NXBT](https://github.com/Brikwerk/nxbt), allowing you to print from a Linux machine with a Bluetooth connection rather than a specialized microcontroller. img3splat is heavily inspired by [img2splat](https://github.com/JonathanNye/img2splat), but fixes syncing issues and implements new features to increase reliability.
+img3splat is a post printer for Splatoon 3 that generates macros for [NXBT](https://github.com/Brikwerk/nxbt), allowing you to print from a Linux machine with a Bluetooth connection rather than a specialized microcontroller. img3splat is heavily inspired by (but wholly independent from) [img2splat](https://github.com/JonathanNye/img2splat), but fixes some issues and implements new features to increase reliability.
 ## How to print
 1. Install [JonathanNye's fork of NXBT](https://github.com/JonathanNye/nxbt/tree/experiment/busy-wait) via:
 
