@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 #import libraries
 import sys    #for quitting the program
 import os     #for checking macro size
