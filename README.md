@@ -19,7 +19,7 @@ Probably not functional yet, need to confirm command-line is functional when ins
 
 3. Install splatprint via:
 
-        pip install (insert command idk)
+        pip install splatprint
 
 4. Create a 320x120 horizontal image to serve as your plaza post. Images don't necessarily have to be 2-bit grayscale, as they will be automatically converted based on luminance, but dithering *will not* be applied. Processing such images to grayscale beforehand is highly recommended. Any format readable by `Pillow` is supported.
 

@@ -6,9 +6,9 @@ import os     #for checking macro size
 from PIL import Image
 import numpy as np
 
-import printpost
-import macropreview
-import repairpost
+from splatprint.printpost import postprint
+from splatprint.macropreview import preview
+from splatprint.repairpost import procrepair, genrepairarray
 
 
 def main():
@@ -157,7 +157,7 @@ def main():
     #-----------------------------
     # generate 320x120 rotated image from repair image
     if repair or save:
-        rpr_out = repairpost.procrepair(rprimg)    #returns (rotated array, processed screenshot image)
+        rpr_out = procrepair(rprimg)    #returns (rotated array, processed screenshot image)
         rprimg_ar = rpr_out[0]
         scrimg = rpr_out[1]
 
@@ -178,7 +178,7 @@ def main():
 
     #generate repair array, generate macro 
     if repair:
-        proc_ar = repairpost.genrepairarray(mainimg_ar, rprimg_ar)
+        proc_ar = genrepairarray(mainimg_ar, rprimg_ar)
         # check if proc_ar has no printable pixels, if so, terminate program
         if np.all(proc_ar == 0):
             print('Error: No pixels to repair!')
@@ -195,30 +195,30 @@ def main():
 
     #generate repair macro
     if repair:
-        printpost.printpost(proc_ar, rpr_macro_name, False, delay, True, cautious)
+        postprint(proc_ar, rpr_macro_name, False, delay, True, cautious)
         if verbose_en:
             print('Generated repair macro!')
 
     #generate normal/inverse macros
     else:
-        printpost.printpost(mainimg_ar, nrm_macro_name, False, delay, False, cautious)
+        postprint(mainimg_ar, nrm_macro_name, False, delay, False, cautious)
         if verbose_en:
             print('Generated macro!')
-        printpost.printpost(mainimg_ar, inv_macro_name, True, delay, False, cautious)
+        postprint(mainimg_ar, inv_macro_name, True, delay, False, cautious)
         if verbose_en:
             print('Generated inverse macro!')
 
     #------------------------------
     #run preview script
     if repair:
-        macropreview.preview(rpr_macro_name, rpr_preview_name, False, True, scrimg)
+        preview(rpr_macro_name, rpr_preview_name, False, True, scrimg)
         if verbose_en:
             print('Generated repair macro preview!')
     else:
-        macropreview.preview(nrm_macro_name, nrm_preview_name, False, False, False)
+        preview(nrm_macro_name, nrm_preview_name, False, False, False)
         if verbose_en:
             print('Generated macro preview!')
-        macropreview.preview(inv_macro_name, inv_preview_name, True, False, False)
+        preview(inv_macro_name, inv_preview_name, True, False, False)
         if verbose_en:
             print('Generated inverse macro preview!')
 

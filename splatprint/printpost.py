@@ -1,6 +1,6 @@
 import numpy as np
 
-def printpost(array, inputfname, inverse, delay, repair, cautious):
+def postprint(array, inputfname, inverse, delay, repair, cautious):
     #open input file
     inputfile = open(inputfname, 'w')
     #universal vars
