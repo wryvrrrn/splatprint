@@ -11,7 +11,7 @@ import macropreview
 import repairpost
 
 
-if __name__ == "__main__":
+def main():
     #output vars
     nrm_macro_name = 'nrm_macro.txt'
     inv_macro_name = 'inv_macro.txt'
