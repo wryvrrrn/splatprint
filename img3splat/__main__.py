@@ -1,4 +1,5 @@
 #import libraries
+from ast import arg
 from cmath import nan
 import sys    #for quitting the program
 import os     #for checking macro size
@@ -8,18 +9,6 @@ import numpy as np
 import printpost
 import macropreview
 import repairpost
-
-#future CLI argument stuff
-img_input = 'test/nkos.png'
-rpr_input = 'test/screenshot.jpg'
-delay_input = ''
-delay = 0.1
-verbose_en = True         #print lines after macro generation/preview generation (doesn't affect error output)
-print_instructions = False    #show print instructions on completion (maybe via very verbose flag?)
-repair = True    #repair mode for screenshot to file comparison
-cautious = False    #cautious mode, always prints whole columns
-save = False    #save mode for saving screenshots to a 320x120 image.
-                 #note: mutually exclusive with -r or input.png
 
 #output vars
 nrm_macro_name = 'nrm_macro.txt'
@@ -31,45 +20,90 @@ rpr_preview_name = 'rpr_preview.png'
 scr_name = 'proc_screenshot.png'    #1280x720 screenshot processed to 320x120
 
 #-----------------------------
-#save mode validation
-#if save, detect if repair, etc. is enabled, error out if so
-#only flag is verbose
+#Command line
 
-#validate delay input for main/repair mode
-if save == False:
+possible_flags = ('-i', '-r', '-d', '-c', '-p', '-v', '-s')
+
+help_msg = '''Standard usage:
+    img3splat -i "image.png"
+where "input.png" is the 320x120 image to print
+
+Repair mode:
+    img3splat -i "image.png" -r "screenshot.jpg"
+"input.png" is the image to change the post to (320x120)
+"screenshot.jpg" is the post to fix (1280x720 Switch screenshot or 320x120 image)
+
+Save mode:
+    img3splat -s "screenshot.jpg"
+where "screenshot.jpg" is the 1280x720 Switch screenshot to save as a 320x120 image
+
+Optional arguments:
+-d [#]: delay in seconds for print inputs (e.g. "-d 0.05"), 0.1 by default
+-c: cautious mode, prints in full columns (for unstable connections)
+-p: prints post printing instructions after macro generation
+-v: verbose, prints extra messages about generation steps
+'''
+
+#default values
+repair = False                #repair mode
+delay_input = ''
+delay = 0.1
+cautious = False              #cautious mode
+print_instructions = False    #show print instructions on completion
+verbose_en = False            #verbose
+save = False                  #save mode
+
+#CLI Args
+args = sys.argv[1:]
+#print help if no args
+if len(args) == 0:
+    print(help_msg)
+    sys.exit()
+#screenshot image (rpr_input)
+if '-s' in args:
+    save = True
     try:
-        if delay_input != '':
-            delay = float(delay_input)
+        rpr_input = args[(args.index('-s') + 1)]
     except:
-        print('Error: Invalid delay input! Not a number.')
+        print('Error: save argument set, but screenshot not specified!')
         sys.exit()
-    if delay <= 0:
-        print('Error: Invalid delay input! Must be greater than 0.')
-        sys.exit()
-    elif delay >= 0.5:
-        print('Delay value is large, print might take a while.')
+else:
+    #input image (img_input)
+    if '-i' in args:
+        try:
+            
+            img_input = args[(args.index('-i') + 1)]
+        except:
+            print('Error: input argument set, but image not specified!')
+            sys.exit()
+    #repair image (rpr_input and repair)
+    if '-r' in args:
+        repair = True
+        try:
+            rpr_input = args[(args.index('-r') + 1)]
+        except:
+            print('Error: repair argument set, but repair image not specified!')
+            sys.exit()
 
-    #open main image, convert to bilevel, test integrity (exit if invalid)
-    try:
-        mainimg = Image.open(img_input).convert('1')
-    except:
-        print("Error: Invalid file! Image isn't recognized or doesn't exist.")
-        sys.exit()
-    if mainimg.size != (320,120):    #check image size (exit if wrong size)
-        print('Error: Image is not 320x120!')
-        sys.exit()
+    #delay (delay_input)
+    if '-d' in args:
+        try:
+            delay_input = args[(args.index('-d') + 1)]
+        except:
+            print('Error: delay argument set, but time not specified!')
+            sys.exit()
+    #cautious
+    if '-c' in args:
+        cautious = True
+    #print_instructions
+    if '-p' in args:
+        print_instructions = True
+#verbose
+if '-v' in args:
+    verbose_en = True
 
-#open repair image, check size
-if repair:
-    try:
-        rprimg = Image.open(rpr_input)
-    except:
-        print("Error: Invalid repair file! Image isn't recognized or doesn't exist.")
-        sys.exit()
-    if ( (rprimg.size == (1280,720)) or (rprimg.size == (320,120)) ) == False:
-        print('Error: Repair image is not 1280x720 or 320x120!')
-        sys.exit()
-
+#-----------------------------
+#validate inputs
 if save:
     try:
         rprimg = Image.open(rpr_input)
@@ -79,9 +113,46 @@ if save:
     if (rprimg.size == (1280,720)) == False:
         print('Error: Screenshot image is not 1280x720!')
         sys.exit()
+    if verbose_en:
+        print('Saving screenshot "' + str(rpr_input) + '"')
+else:
+    try:
+        if delay_input != '':
+            delay = float(delay_input)
+    except:
+        print('Error: Invalid delay input! Not a number.')
+        sys.exit()
+    if delay <= 0:
+        print('Error: Invalid delay input! Must be greater than 0.')
+        sys.exit()
+    if verbose_en:
+        print('Using delay value of ' + str(delay) + 's')
+    #open main image, convert to bilevel
+    try:
+        mainimg = Image.open(img_input).convert('1')
+    except:
+        print("Error: Invalid file! Image isn't recognized or doesn't exist.")
+        sys.exit()
+    if mainimg.size != (320,120):
+        print('Error: Image is not 320x120!')
+        sys.exit()
+    #open repair image, check size
+    if repair:
+        try:
+            rprimg = Image.open(rpr_input)
+        except:
+            print("Error: Invalid repair file! Image isn't recognized or doesn't exist.")
+            sys.exit()
+        if ( (rprimg.size == (1280,720)) or (rprimg.size == (320,120)) ) == False:
+            print('Error: Repair image is not 1280x720 or 320x120!')
+            sys.exit()
+        if verbose_en:
+            print('Repairing "' + str(rpr_input) + '" with "' + str(img_input) + '"')
+    else:
+        if verbose_en:
+            print('Printing "' + str(img_input) + '"')
 
 #-----------------------------
-
 # generate 320x120 rotated image from repair image
 if repair or save:
     rpr_out = repairpost.procrepair(rprimg)    #returns (rotated array, processed screenshot image)
@@ -89,7 +160,6 @@ if repair or save:
     scrimg = rpr_out[1]
 
 #-----------------------------
-
 # if save, save screenshot and exit
 if save:
     scrimg.save(scr_name)
@@ -98,6 +168,7 @@ if save:
     sys.exit()
 
 #-----------------------------
+#generate np arrays from images
 
 #convert main image to np array, rotate 90 deg to process as columns
 mainimg_ar = np.array(mainimg)
@@ -105,13 +176,14 @@ mainimg_ar = np.rot90(mainimg_ar, 3)
 
 #generate repair array, generate macro 
 if repair:
-    proc_ar = repairpost.genrepairarray(mainimg_ar, rprimg_ar)    #creates printable array with repair instructions
-    # check if proc_ar is all skip, if so, terminate program
+    proc_ar = repairpost.genrepairarray(mainimg_ar, rprimg_ar)
+    # check if proc_ar has no printable pixels, if so, terminate program
     if np.all(proc_ar == 0):
         print('Error: No pixels to repair!')
         sys.exit()
 
 #-----------------------------
+#generate macros
 
 if verbose_en:
     if cautious:
@@ -135,7 +207,6 @@ else:
         print('Generated inverse macro!')
 
 #------------------------------
-
 #run preview script
 if repair:
     macropreview.preview(rpr_macro_name, rpr_preview_name, False, True, scrimg)
@@ -148,6 +219,9 @@ else:
     macropreview.preview(inv_macro_name, inv_preview_name, True, False, None)
     if verbose_en:
         print('Generated inverse macro preview!')
+
+#------------------------------
+#closing messages
 
 #get smaller macro size
 if repair == False:
@@ -162,7 +236,6 @@ if repair == False:
     else:
         print('Both macros have the exact same size (somehow).')
 
-#print instructions
 if print_instructions:
     print('''To print, open a blank plaza post (or all black if inverse),
 then press the "sync" button on your controller to disconnect it.
@@ -174,4 +247,4 @@ Make sure your Switch is in handheld mode to prevent desyncs.''')
         print('''Then, run one of these commands to start the print:
     sudo nxbt macro -c "nrm_macro.txt" -r
     sudo nxbt macro -c "inv_macro.txt" -r''')
-    print('Woomy! くコ:彡')
+    print('Woomy! くコ:彡   Ｃ:。ミ')
