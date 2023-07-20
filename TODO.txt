@@ -1,14 +1,8 @@
 general:
-- set up pip and github
 - set up demo folder (with actual legit images)
-- check performance on lower-end devices
-
-__main__.py:
-- make sure inputs/outputs are based on path, not project folder
 
 README:
-- pip installation command
-- demonstration: normal or inverse preview, in-game screenshot (first pass), repair macro preview (if applicable), second pass (if applicable)
+- demonstration: normal or inverse preview, in-game screenshot (first pass), repair macro preview (if applicable)
 
 macropreview.py: (vanity, low priority (probably won't implement tbh))
 - have skip color adapt to bg color on repair
