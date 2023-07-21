@@ -26,7 +26,7 @@ Splatprint is a post printer for Splatoon 3 that allows you to print images with
 
     Additional flags are listed under "Usage" below.
 
-    Splatprint creates macros for printing on blank canvases (`nrm_macro.txt`) and all-black canvases (`inv_macro.txt`). Depending on post contents, one may be significantly faster than the other; splatprint will suggest which macro to use by comparing the file sizes of both.
+    Splatprint creates macros for printing on blank canvases (`nrm_macro.txt`) and all-black canvases (`inv_macro.txt`). Depending on post contents, one may be significantly faster than the other; splatprint will suggest which macro to use by comparing the print times of both.
 
     Previews of macro prints are generated as `nrm_preview.png` and `inv_preview.png`. Blue pixels represent pixels the cursor passes over but doesn't print, while black/white (depending on macro type) indicates any printed pixels.
 

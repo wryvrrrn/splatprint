@@ -24,8 +24,6 @@ def main():
     #-----------------------------
     #Command line
 
-    possible_flags = ('-i', '-r', '-d', '-c', '-p', '-v', '-s')
-
     help_msg = '''Standard usage:
         img3splat -i "image.png"
     where "input.png" is the 320x120 image to print
@@ -195,16 +193,16 @@ def main():
 
     #generate repair macro
     if repair:
-        postprint(proc_ar, rpr_macro_name, False, delay, True, cautious)
+        rpr_printtime, rpr_printtime_str = postprint(proc_ar, rpr_macro_name, False, delay, True, cautious)
         if verbose_en:
             print('Generated repair macro!')
 
     #generate normal/inverse macros
     else:
-        postprint(mainimg_ar, nrm_macro_name, False, delay, False, cautious)
+        nrm_printtime, nrm_printtime_str = postprint(mainimg_ar, nrm_macro_name, False, delay, False, cautious)
         if verbose_en:
             print('Generated macro!')
-        postprint(mainimg_ar, inv_macro_name, True, delay, False, cautious)
+        inv_printtime, inv_printtime_str = postprint(mainimg_ar, inv_macro_name, True, delay, False, cautious)
         if verbose_en:
             print('Generated inverse macro!')
 
@@ -225,18 +223,18 @@ def main():
     #------------------------------
     #closing messages
 
-    #get smaller macro size
-    if repair == False:
-        nrm_size = os.path.getsize(nrm_macro_name)
-        inv_size = os.path.getsize(inv_macro_name)
-        if nrm_size < inv_size:
+    #show/compare print times
+    if repair:
+        print('Repair print time: ' + rpr_printtime_str)
+    else:
+        if nrm_printtime < inv_printtime:
             print('Normal macro likely has shorter print time.')
-            print('(' + str(nrm_size) + 'b vs. ' + str(inv_size) + 'b)')
-        elif nrm_size > inv_size:
+            print('(' + nrm_printtime_str + ' vs. ' + str(inv_printtime_str) + ')')
+        elif nrm_printtime > inv_printtime:
             print('Inverse macro likely has shorter print time.')
-            print('(' + str(inv_size) + 'b vs. ' + str(nrm_size) + 'b)')
+            print('(' + inv_printtime_str + ' vs. ' + nrm_printtime_str + ')')
         else:
-            print('Both macros have the exact same size (somehow).')
+            print('Both macros have the exact same size (' + nrm_printtime_str + ').')
 
     if print_instructions:
         print('''To print, open a blank plaza post (or all black if inverse),
