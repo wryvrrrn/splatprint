@@ -25,16 +25,16 @@ def main():
     #Command line
 
     help_msg = '''Standard usage:
-        img3splat -i "image.png"
+        splatprint -i "image.png"
     where "input.png" is the 320x120 image to print
 
     Repair mode:
-        img3splat -i "image.png" -r "screenshot.jpg"
+        splatprint -i "image.png" -r "screenshot.jpg"
     "input.png" is the image to change the post to (320x120)
     "screenshot.jpg" is the post to fix (1280x720 Switch screenshot or 320x120 image)
 
     Save mode:
-        img3splat -s "screenshot.jpg"
+        splatprint -s "screenshot.jpg"
     where "screenshot.jpg" is the 1280x720 Switch screenshot to save as a 320x120 image
 
     Optional arguments:

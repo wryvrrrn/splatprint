@@ -1,5 +1,6 @@
 general:
 - set up demo folder (with actual legit images)
+- eventually: proper pathfinding algorithm for simpler lineart? not enabled by default
 
 README:
 - demonstration: normal or inverse preview, in-game screenshot (first pass), repair macro preview (if applicable)
