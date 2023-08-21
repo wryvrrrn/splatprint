@@ -39,24 +39,29 @@ def main():
     #Command line
 
     help_msg = '''Standard usage:
-        splatprint -i "image.png"
-    where "input.png" is the 320x120 image to print
+    splatprint -i "image.png"
+where "input.png" is the 320x120 image to print
 
-    Repair mode:
-        splatprint -i "image.png" -r "screenshot.jpg"
-    "input.png" is the image to change the post to (320x120)
-    "screenshot.jpg" is the post to fix (1280x720 Switch screenshot or 320x120 image)
+Repair mode:
+    splatprint -i "image.png" -r "screenshot.jpg"
+"input.png" is the image to change the post to (320x120)
+"screenshot.jpg" is the post to fix (1280x720 Switch screenshot or 320x120 image)
 
-    Save mode:
-        splatprint -s "screenshot.jpg"
-    where "screenshot.jpg" is the 1280x720 Switch screenshot to save as a 320x120 image
+Save mode:
+    splatprint -s "screenshot.jpg"
+where "screenshot.jpg" is the 1280x720 Switch screenshot to save as a 320x120 image
 
-    Optional arguments:
-    -d [#]: delay in seconds for print inputs (e.g. "-d 0.05"), 0.1 by default
-    -c: cautious mode, prints in full columns (for unstable connections)
-    -p: prints post printing instructions after macro generation
-    -v: verbose, prints extra messages about generation steps
-    '''
+Optional arguments:
+-d [#]: delay in seconds for print inputs (e.g. "-d 0.05"), 0.1 by default
+-c: cautious mode, prints in full columns (for unstable connections)
+-p: prints post printing instructions after macro generation
+-v: verbose, prints extra messages about generation steps
+
+Print post printing instructions only:
+    splatprint -p
+Print instructions for repair macros:
+    splatprint -p -r
+'''
 
     #default values
     repair = False                #repair mode
