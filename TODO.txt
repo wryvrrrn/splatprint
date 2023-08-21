@@ -3,11 +3,9 @@ general:
 - eventually: proper pathfinding algorithm for simpler lineart? not enabled by default
 	sort image into blobs (blob detection?), then calculate distance between blobs? enter and exit a blob mid-way? (split a blob into chunks based on surrounding ones?)
 	main thing is that print path within a blob (a fully inked block) really doesn't matter as long as there aren't any overlaps (or pathing over unnecessary "visited" pixels)
-	
-- make -p flag without any other arguments just print out instructions
 
 README:
-- demonstration: normal or inverse preview, in-game screenshot (first pass), repair macro preview (if applicable)
+- repair mode demo, maybe?
 
 macropreview.py: (vanity, low priority (probably won't implement tbh))
 - have skip color adapt to bg color on repair

@@ -18,7 +18,7 @@ Splatprint is a post printer for Splatoon 3 that allows you to print images with
 
         pip install splatprint
 
-4. Create a 320x120 horizontal image to serve as your plaza post. Images don't necessarily have to be 2-bit grayscale, as they will be automatically converted based on luminance, but dithering *will not* be applied. Processing such images to grayscale beforehand is highly recommended. Any format readable by `Pillow` is supported.
+4. Create a 320x120 horizontal image to serve as your plaza post. Images don't necessarily have to be 1-bit binary as they will be automatically converted based on luminance, but dithering *will not* be applied. Processing such images to grayscale beforehand is highly recommended. Any format readable by `Pillow` is supported.
 
 5. Run splatprint:
 
@@ -63,22 +63,33 @@ Splatprint is a post printer for Splatoon 3 that allows you to print images with
     The repair macro will also take a screenshot and press - to save after printing.
 
 ## Why Splatprint?
-Splatprint is designed for higher reliability when printing complex posts, minimizing the need for manual touchups.
+Splatprint is designed for higher reliability when printing complex posts, minimizing the need for manual touchups, and allows you to easily tweak printed posts without re-printing the whole image.
 
 - In fast mode (default), splatprint scans the contents of each column to minimize the amount of inputs used when printing. To reduce the effects of dropped inputs, if the last pixel in a column is located at the top or bottom of the canvas, it also sends extra up/down inputs to ensure the cursor is at the proper location.
-- Splatprint can also print in cautious mode, printing in full columns to minimize the effects of dropped inputs. Printing in columns rather than rows reduces the area of effect of dropped inputs. 
+- Splatprint can also print in cautious mode (for less stable connections), printing in full columns to make sure the cursor is properly aligned at each column. 
 - In case of errors, splatprint supports taking a screenshot of the Splatoon post interface to generate a repair macro that fixes any incorrect pixels. This feature can also be used to tweak the original image without printing the image from scratch.
     
 - Splatprint can also save the post contents of a screenshot to a 320x120 image, allowing you to rough out a post on the touchscreen and polish it in an image editor (useful if you don't have a drawing tablet).
 
 ## Demonstration
 
-[insert images here]
+Original post image:
+
+![Demo: original post](https://github.com/wryvrrrn/splatprint/blob/master/demo/demo.png?raw=true)
+
+Generated macro preview (inverse):
+
+![Demo: post inverse macro](https://github.com/wryvrrrn/splatprint/blob/master/demo/inv_preview.png?raw=true)
+
+In-game:
+
+![Demo: printed post screenshot](https://github.com/wryvrrrn/splatprint/blob/master/demo/screenshot.jpg?raw=true)
+
 
 ## Usage
 ### Arguments
 
-You can view the help message by running `splatprint` without any arguments.
+You can view the help message by running `splatprint` without any arguments. Additionally, you can view the print instructions by running `splatprint -p` (standard instructions) or `splatprint -p -r` (repair mode instructions).
 
 Standard usage of splatprint is as follows:
 
