@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='splatprint',
-    version='1.0.2',    
+    version='1.0.3',    
     description='A macro generator for NXBT to print Splatoon 3 posts via Bluetooth.',
     url='https://github.com/wryvrrrn/splatprint',
     author='Wryvrrrn',
