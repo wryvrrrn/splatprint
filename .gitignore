@@ -5,13 +5,6 @@
 *.bak
 
 # output and test images
-inv_macro.txt
-nrm_macro.txt
-rpr_macro.txt
-inv_preview.png
-nrm_preview.png
-rpr_preview.png
-proc_screenshot.png
 test
 
 # needed because I'm not very smart
