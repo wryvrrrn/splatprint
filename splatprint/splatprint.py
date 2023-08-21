@@ -10,8 +10,22 @@ from splatprint.printpost import postprint
 from splatprint.macropreview import preview
 from splatprint.repairpost import procrepair, genrepairarray
 
-
 def main():
+
+    def instructions_print(repair):
+        print('''To print, open a blank plaza post (or all black if inverse),
+    then press the "sync" button on your controller to disconnect it.
+    Make sure your Switch is in handheld mode to prevent desyncs.''')
+        if repair:
+            print('''Then, run this command to start the print:
+        sudo nxbt macro -c "rpr_macro.txt" -r''')
+        else:
+            print('''Then, run one of these commands to start the print:
+        sudo nxbt macro -c "nrm_macro.txt" -r
+        sudo nxbt macro -c "inv_macro.txt" -r''')
+        print('Woomy! くコ:彡   Ｃ:。ミ')
+        return
+
     #output vars
     nrm_macro_name = 'nrm_macro.txt'
     inv_macro_name = 'inv_macro.txt'
@@ -76,6 +90,13 @@ def main():
             except:
                 print('Error: input argument set, but image not specified!')
                 sys.exit()
+        #print instructions only if no image input and flag is set
+        elif '-p' in args:
+            if '-r' in args:
+                instructions_print(True)
+            else:
+                instructions_print(False)
+            sys.exit()
         #repair image (rpr_input and repair)
         if '-r' in args:
             repair = True
@@ -237,14 +258,6 @@ def main():
             print('Both macros have the exact same size (' + nrm_printtime_str + ').')
 
     if print_instructions:
-        print('''To print, open a blank plaza post (or all black if inverse),
-    then press the "sync" button on your controller to disconnect it.
-    Make sure your Switch is in handheld mode to prevent desyncs.''')
-        if repair:
-            print('''Then, run this command to start the print:
-        sudo nxbt macro -c "rpr_macro.txt" -r''')
-        else:
-            print('''Then, run one of these commands to start the print:
-        sudo nxbt macro -c "nrm_macro.txt" -r
-        sudo nxbt macro -c "inv_macro.txt" -r''')
-        print('Woomy! くコ:彡   Ｃ:。ミ')
+        instructions_print(repair)
+    
+    return
